@@ -1,0 +1,307 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		253CC14015FFA6C70036D131 /* AlbumsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */; };
+		253FFA8B15FA687A00BB28EF /* RAWretchAlbumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */; };
+		25E3D18715F3DE2B0078E5FD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18615F3DE2B0078E5FD /* UIKit.framework */; };
+		25E3D18915F3DE2B0078E5FD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18815F3DE2B0078E5FD /* Foundation.framework */; };
+		25E3D18B15F3DE2B0078E5FD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18A15F3DE2B0078E5FD /* CoreGraphics.framework */; };
+		25E3D19115F3DE2B0078E5FD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 25E3D18F15F3DE2B0078E5FD /* InfoPlist.strings */; };
+		25E3D19315F3DE2B0078E5FD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D19215F3DE2B0078E5FD /* main.m */; };
+		25E3D19715F3DE2B0078E5FD /* WretchViewerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D19615F3DE2B0078E5FD /* WretchViewerAppDelegate.m */; };
+		25E3D19A15F3DE2B0078E5FD /* WretchViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D19915F3DE2B0078E5FD /* WretchViewerViewController.m */; };
+		25E3D19D15F3DE2B0078E5FD /* WretchViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E3D19B15F3DE2B0078E5FD /* WretchViewerViewController.xib */; };
+		25E3D1A915F478D40078E5FD /* RAWretchPhotoURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D1A815F478D40078E5FD /* RAWretchPhotoURL.m */; };
+		25E3D1B415F4E53B0078E5FD /* RAWretchAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D1B315F4E53A0078E5FD /* RAWretchAlbum.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		253CC13E15FFA6C70036D131 /* AlbumsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumsTableViewController.h; sourceTree = "<group>"; };
+		253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumsTableViewController.m; sourceTree = "<group>"; };
+		253FFA8915FA687A00BB28EF /* RAWretchAlbumList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAWretchAlbumList.h; sourceTree = "<group>"; };
+		253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAWretchAlbumList.m; sourceTree = "<group>"; };
+		25E3D18215F3DE2B0078E5FD /* WretchViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WretchViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25E3D18615F3DE2B0078E5FD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		25E3D18815F3DE2B0078E5FD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		25E3D18A15F3DE2B0078E5FD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		25E3D18E15F3DE2B0078E5FD /* WretchViewer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WretchViewer-Info.plist"; sourceTree = "<group>"; };
+		25E3D19015F3DE2B0078E5FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		25E3D19215F3DE2B0078E5FD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		25E3D19415F3DE2B0078E5FD /* WretchViewer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WretchViewer-Prefix.pch"; sourceTree = "<group>"; };
+		25E3D19515F3DE2B0078E5FD /* WretchViewerAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WretchViewerAppDelegate.h; sourceTree = "<group>"; };
+		25E3D19615F3DE2B0078E5FD /* WretchViewerAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WretchViewerAppDelegate.m; sourceTree = "<group>"; };
+		25E3D19815F3DE2B0078E5FD /* WretchViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WretchViewerViewController.h; sourceTree = "<group>"; };
+		25E3D19915F3DE2B0078E5FD /* WretchViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WretchViewerViewController.m; sourceTree = "<group>"; };
+		25E3D19C15F3DE2B0078E5FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WretchViewerViewController.xib; sourceTree = "<group>"; };
+		25E3D1A715F478D40078E5FD /* RAWretchPhotoURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAWretchPhotoURL.h; sourceTree = "<group>"; };
+		25E3D1A815F478D40078E5FD /* RAWretchPhotoURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAWretchPhotoURL.m; sourceTree = "<group>"; };
+		25E3D1B215F4E53A0078E5FD /* RAWretchAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAWretchAlbum.h; sourceTree = "<group>"; };
+		25E3D1B315F4E53A0078E5FD /* RAWretchAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAWretchAlbum.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		25E3D17F15F3DE2B0078E5FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25E3D18715F3DE2B0078E5FD /* UIKit.framework in Frameworks */,
+				25E3D18915F3DE2B0078E5FD /* Foundation.framework in Frameworks */,
+				25E3D18B15F3DE2B0078E5FD /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25E3D17715F3DE2A0078E5FD = {
+			isa = PBXGroup;
+			children = (
+				25E3D18C15F3DE2B0078E5FD /* WretchViewer */,
+				25E3D18515F3DE2B0078E5FD /* Frameworks */,
+				25E3D18315F3DE2B0078E5FD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		25E3D18315F3DE2B0078E5FD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				25E3D18215F3DE2B0078E5FD /* WretchViewer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		25E3D18515F3DE2B0078E5FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				25E3D18615F3DE2B0078E5FD /* UIKit.framework */,
+				25E3D18815F3DE2B0078E5FD /* Foundation.framework */,
+				25E3D18A15F3DE2B0078E5FD /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		25E3D18C15F3DE2B0078E5FD /* WretchViewer */ = {
+			isa = PBXGroup;
+			children = (
+				25E3D19515F3DE2B0078E5FD /* WretchViewerAppDelegate.h */,
+				25E3D19615F3DE2B0078E5FD /* WretchViewerAppDelegate.m */,
+				25E3D1A715F478D40078E5FD /* RAWretchPhotoURL.h */,
+				25E3D1A815F478D40078E5FD /* RAWretchPhotoURL.m */,
+				25E3D1B215F4E53A0078E5FD /* RAWretchAlbum.h */,
+				25E3D1B315F4E53A0078E5FD /* RAWretchAlbum.m */,
+				253FFA8915FA687A00BB28EF /* RAWretchAlbumList.h */,
+				253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */,
+				253CC13E15FFA6C70036D131 /* AlbumsTableViewController.h */,
+				253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */,
+				25E3D19815F3DE2B0078E5FD /* WretchViewerViewController.h */,
+				25E3D19915F3DE2B0078E5FD /* WretchViewerViewController.m */,
+				25E3D19B15F3DE2B0078E5FD /* WretchViewerViewController.xib */,
+				25E3D18D15F3DE2B0078E5FD /* Supporting Files */,
+			);
+			path = WretchViewer;
+			sourceTree = "<group>";
+		};
+		25E3D18D15F3DE2B0078E5FD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				25E3D18E15F3DE2B0078E5FD /* WretchViewer-Info.plist */,
+				25E3D18F15F3DE2B0078E5FD /* InfoPlist.strings */,
+				25E3D19215F3DE2B0078E5FD /* main.m */,
+				25E3D19415F3DE2B0078E5FD /* WretchViewer-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		25E3D18115F3DE2B0078E5FD /* WretchViewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 25E3D1A015F3DE2B0078E5FD /* Build configuration list for PBXNativeTarget "WretchViewer" */;
+			buildPhases = (
+				25E3D17E15F3DE2B0078E5FD /* Sources */,
+				25E3D17F15F3DE2B0078E5FD /* Frameworks */,
+				25E3D18015F3DE2B0078E5FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WretchViewer;
+			productName = WretchViewer;
+			productReference = 25E3D18215F3DE2B0078E5FD /* WretchViewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		25E3D17915F3DE2A0078E5FD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = WretchViewer;
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 25E3D17C15F3DE2A0078E5FD /* Build configuration list for PBXProject "WretchViewer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 25E3D17715F3DE2A0078E5FD;
+			productRefGroup = 25E3D18315F3DE2B0078E5FD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				25E3D18115F3DE2B0078E5FD /* WretchViewer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		25E3D18015F3DE2B0078E5FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25E3D19115F3DE2B0078E5FD /* InfoPlist.strings in Resources */,
+				25E3D19D15F3DE2B0078E5FD /* WretchViewerViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		25E3D17E15F3DE2B0078E5FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25E3D19315F3DE2B0078E5FD /* main.m in Sources */,
+				25E3D19715F3DE2B0078E5FD /* WretchViewerAppDelegate.m in Sources */,
+				25E3D19A15F3DE2B0078E5FD /* WretchViewerViewController.m in Sources */,
+				25E3D1A915F478D40078E5FD /* RAWretchPhotoURL.m in Sources */,
+				25E3D1B415F4E53B0078E5FD /* RAWretchAlbum.m in Sources */,
+				253FFA8B15FA687A00BB28EF /* RAWretchAlbumList.m in Sources */,
+				253CC14015FFA6C70036D131 /* AlbumsTableViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		25E3D18F15F3DE2B0078E5FD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				25E3D19015F3DE2B0078E5FD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		25E3D19B15F3DE2B0078E5FD /* WretchViewerViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				25E3D19C15F3DE2B0078E5FD /* en */,
+			);
+			name = WretchViewerViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		25E3D19E15F3DE2B0078E5FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		25E3D19F15F3DE2B0078E5FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		25E3D1A115F3DE2B0078E5FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WretchViewer/WretchViewer-Prefix.pch";
+				INFOPLIST_FILE = "WretchViewer/WretchViewer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		25E3D1A215F3DE2B0078E5FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WretchViewer/WretchViewer-Prefix.pch";
+				INFOPLIST_FILE = "WretchViewer/WretchViewer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		25E3D17C15F3DE2A0078E5FD /* Build configuration list for PBXProject "WretchViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25E3D19E15F3DE2B0078E5FD /* Debug */,
+				25E3D19F15F3DE2B0078E5FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		25E3D1A015F3DE2B0078E5FD /* Build configuration list for PBXNativeTarget "WretchViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25E3D1A115F3DE2B0078E5FD /* Debug */,
+				25E3D1A215F3DE2B0078E5FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 25E3D17915F3DE2A0078E5FD /* Project object */;
+}
