@@ -45,7 +45,6 @@
 
 - (NSArray *)photoURLsOfCurrentPage
 {
-    currentPageNumber = 2;
     NSString *albumURL;
     if (currentPageNumber <= 1) {
         albumURL = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/album.php?id=%@&book=%@", wretchID, number];
@@ -53,18 +52,15 @@
     else {
         albumURL = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/album.php?id=%@&book=%@&page=%d", wretchID, number, currentPageNumber];
     }
-    //NSLog(@"album url : %@", albumURL);
     
     NSString *htmlText = [self _htmlContent:albumURL];
-    NSMutableArray *arr = [self _photoURLsOfPage:htmlText];
-
-    for (RAWretchPhotoURL *photoURL in arr) {
-        NSLog(@"photo url: %@", [photoURL urlValue]);
-        NSLog(@"= >thumbnail url:%@", [photoURL thumbnailURL]);
-    }
-    
+    NSMutableArray *photos = [self _photoURLsOfPage:htmlText];    
     // setup isNextPage
     [self _searchNextPageFromHtmlText:htmlText];
+    
+    if (photos) {
+        return photos;
+    }
 
     return nil;
 }

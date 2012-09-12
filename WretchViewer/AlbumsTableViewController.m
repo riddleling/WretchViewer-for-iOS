@@ -8,6 +8,7 @@
 
 #import "AlbumsTableViewController.h"
 #import "RAWretchAlbum.h"
+#import "PhotosViewController.h"
 
 
 @interface AlbumsTableViewController (MyMethods)
@@ -103,10 +104,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIViewController *controller = [[UIViewController alloc] init];
+    RAWretchAlbum *album = [albums objectAtIndex:indexPath.row];
+    NSArray* photos = [album photoURLsOfCurrentPage];
+    PhotosViewController *controller = [[PhotosViewController alloc] initWithPhotos:photos];
+    
     controller.title = [[tableView cellForRowAtIndexPath:indexPath].textLabel text];
-    controller.view = [[UIView alloc] init];
-    controller.view.backgroundColor = [UIColor redColor];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

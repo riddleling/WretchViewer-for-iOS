@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		253BE2511600F91F00F35D67 /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253BE2501600F91F00F35D67 /* PhotosViewController.m */; };
 		253CC14015FFA6C70036D131 /* AlbumsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */; };
 		253FFA8B15FA687A00BB28EF /* RAWretchAlbumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */; };
 		25E3D18715F3DE2B0078E5FD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18615F3DE2B0078E5FD /* UIKit.framework */; };
@@ -22,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		253BE24F1600F91F00F35D67 /* PhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosViewController.h; sourceTree = "<group>"; };
+		253BE2501600F91F00F35D67 /* PhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosViewController.m; sourceTree = "<group>"; };
 		253CC13E15FFA6C70036D131 /* AlbumsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumsTableViewController.h; sourceTree = "<group>"; };
 		253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumsTableViewController.m; sourceTree = "<group>"; };
 		253FFA8915FA687A00BB28EF /* RAWretchAlbumList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAWretchAlbumList.h; sourceTree = "<group>"; };
@@ -97,6 +100,8 @@
 				25E3D1B315F4E53A0078E5FD /* RAWretchAlbum.m */,
 				253FFA8915FA687A00BB28EF /* RAWretchAlbumList.h */,
 				253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */,
+				253BE24F1600F91F00F35D67 /* PhotosViewController.h */,
+				253BE2501600F91F00F35D67 /* PhotosViewController.m */,
 				253CC13E15FFA6C70036D131 /* AlbumsTableViewController.h */,
 				253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */,
 				25E3D19815F3DE2B0078E5FD /* WretchViewerViewController.h */,
@@ -188,6 +193,7 @@
 				25E3D1B415F4E53B0078E5FD /* RAWretchAlbum.m in Sources */,
 				253FFA8B15FA687A00BB28EF /* RAWretchAlbumList.m in Sources */,
 				253CC14015FFA6C70036D131 /* AlbumsTableViewController.m in Sources */,
+				253BE2511600F91F00F35D67 /* PhotosViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

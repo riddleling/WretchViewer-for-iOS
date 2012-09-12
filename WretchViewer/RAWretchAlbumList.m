@@ -45,7 +45,7 @@
     else {
         albumsURL = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/%@&page=%d", wretchID, currentPageNumber];
     }
-    NSLog(@"%@", albumsURL);
+    //NSLog(@"%@", albumsURL);
     
     NSString *htmlText = [self _htmlContent:albumsURL];
     NSArray *albums = [self _albumsOfPage:htmlText];
