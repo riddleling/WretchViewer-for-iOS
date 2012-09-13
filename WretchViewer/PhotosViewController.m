@@ -44,7 +44,6 @@
 	// Do any additional setup after loading the view.
     
     //self.view.backgroundColor = [UIColor whiteColor];
-    
     int i = 1;
     int x = 0;
     int y = 0;
@@ -56,10 +55,16 @@
         
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         
-        imageView.frame = CGRectMake(3+x, 3+y, 75, 75);
+        imageView.frame = CGRectMake(0, 0, 75, 75);
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         
-        [self.view addSubview:imageView];
+        CGSize imageViewSize = imageView.frame.size;
+        UIControl *mask = [[UIControl alloc] initWithFrame:CGRectMake(3+x, 3+y, imageViewSize.width, imageViewSize.height)];
+        [mask addSubview:imageView];
+        
+        [mask addTarget:self action:@selector(showPhoto:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:mask];
+        
         i++;
         if (i < 5) {
             x += 80;
@@ -70,10 +75,6 @@
             y += 80;
         }
     }
-    
-    
-    
-    
 }
 
 - (void)viewDidUnload
@@ -87,5 +88,25 @@
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+
+- (void)showPhoto:(id)sender
+{
+    NSLog(@"press a button");
+}
+
+-(UIImage*) _centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect
+{
+    
+    CGSize size= thumbRect.size;
+    UIGraphicsBeginImageContext(size);  
+    //calculation
+    [inImage drawInRect:CGRectMake((size.width-inImage.size.width)/2, (size.height-inImage.size.height)/2, inImage.size.width, inImage.size.height)];
+    UIImage *newThumbnail = UIGraphicsGetImageFromCurrentImageContext();        
+    // pop the context
+    UIGraphicsEndImageContext();
+    return newThumbnail;
+}
+
 
 @end
