@@ -38,7 +38,7 @@
     NSString *htmlText = [self _htmlContent:urlValue];
     NSString *outString;
     
-    NSString *regexpStr = [[NSString alloc] initWithString:@"<img id='DisplayImage' src='([^']+)' "];
+    NSString *regexpStr = [[NSString alloc] initWithFormat:@"<img id='DisplayImage' src='([^']+)' "];
     NSTextCheckingResult *urlMatchStr = [self _matchString:htmlText regexpPattern:regexpStr];
     
     if (urlMatchStr) {
@@ -47,7 +47,7 @@
         return outString;
     }
     else {
-        NSString *regexpStr2 = [[NSString alloc] initWithString:@"<img class='displayimg' src='([^']+)' "];
+        NSString *regexpStr2 = [[NSString alloc] initWithFormat:@"<img class='displayimg' src='([^']+)' "];
         NSTextCheckingResult *urlMatchStr2 = [self _matchString:htmlText regexpPattern:regexpStr2];
         
         if (urlMatchStr2) {

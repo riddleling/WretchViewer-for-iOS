@@ -80,7 +80,7 @@
     for (NSTextCheckingResult *matchStr in array)
     {
         NSRange range1 = [matchStr rangeAtIndex:1];
-        NSString *photoURLStr = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/%@\n", [htmlString substringWithRange:range1]];
+        NSString *photoURLStr = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/%@", [htmlString substringWithRange:range1]];
         
         NSRange range2 = [matchStr rangeAtIndex:2];
         NSString *thumbnailURLStr = [htmlString substringWithRange:range2];

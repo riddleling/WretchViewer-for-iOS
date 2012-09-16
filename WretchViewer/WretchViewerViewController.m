@@ -11,6 +11,7 @@
 #import "RAWretchAlbum.h"
 #import "AlbumsTableViewController.h"
 
+
 @interface WretchViewerViewController ()
 
 @end
@@ -25,7 +26,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
 }
 
 - (void)viewDidUnload

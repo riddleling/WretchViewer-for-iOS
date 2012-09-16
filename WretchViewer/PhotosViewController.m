@@ -47,6 +47,7 @@
     int i = 1;
     int x = 0;
     int y = 0;
+    int tag = 0;
     
     for (RAWretchPhotoURL *photo in photos) {
         NSURL *url = [NSURL URLWithString:photo.thumbnailURL];
@@ -63,8 +64,10 @@
         [mask addSubview:imageView];
         
         [mask addTarget:self action:@selector(showPhoto:) forControlEvents:UIControlEventTouchUpInside];
+        mask.tag = tag;
         [self.view addSubview:mask];
         
+        tag++;
         i++;
         if (i < 5) {
             x += 80;
@@ -92,7 +95,22 @@
 
 - (void)showPhoto:(id)sender
 {
-    NSLog(@"press a button");
+    int tag = [sender tag];
+    UIViewController *controller = [[UIViewController alloc] init];
+    controller.title = @"Photo";
+    RAWretchPhotoURL *photo = [photos objectAtIndex:tag];
+    
+    NSURL *url = [NSURL URLWithString:[photo convertToFileURL]];
+    NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+    UIImage *image = [[UIImage alloc] initWithData:data];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480-20-44)];
+    imageView.image = image;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [controller.view addSubview:imageView];
+    
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 -(UIImage*) _centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect
