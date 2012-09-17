@@ -53,16 +53,8 @@
 {
     NSString *wretchID = textField.text;
     RAWretchAlbumList *albums = [[RAWretchAlbumList alloc] initWithWretchID:wretchID];
-    NSArray *list = [albums currentList];
-    /*
-    int i = 1;
-    for (RAWretchAlbum *album in list) {
-        NSLog(@"%d: %@, %@, %@, %@", i, album.wretchID, album.number, album.name, album.pictures);
-        NSLog(@" => %@", album.coverURL);
-        i++;
-    }*/
     
-    AlbumsTableViewController *masterViewController = [[AlbumsTableViewController alloc] initWithStyle:UITableViewStylePlain albums:list];
+    AlbumsTableViewController *masterViewController = [[AlbumsTableViewController alloc] initWithStyle:UITableViewStylePlain albums:albums];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
     [self presentViewController:navController animated:NO completion:^{}];
     

@@ -13,6 +13,9 @@
 
 @interface AlbumsTableViewController (MyMethods)
 - (void)backToMainView:(id)sender;
+- (void)prevPage:(id)sender;
+- (void)nextPage:(id)sender;
+- (void)updateTable;
 -(UIImage*)_centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect;
 @end
 
@@ -20,13 +23,25 @@
 @implementation AlbumsTableViewController
 
 @synthesize albums;
+@synthesize currentAlbumsList;
+@synthesize nextButton;
+@synthesize prevButton;
 
 
-- (id)initWithStyle:(UITableViewStyle)style albums:(NSArray *)array
+- (id)initWithStyle:(UITableViewStyle)style albums:(RAWretchAlbumList *)albumsListObj
 {
     self = [super initWithStyle:style];
     if (self) {
-        self.albums = array;
+        self.albums = albumsListObj;
+        self.currentAlbumsList = [self.albums currentList];
+        self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(nextPage:)];
+        self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(prevPage:)];
     }
     return self;
 }
@@ -45,9 +60,30 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = [[albums objectAtIndex:0] wretchID];
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:self action:@selector(backToMainView:)];
+    self.title = [albums wretchID];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToMainView:)];
     self.navigationItem.leftBarButtonItem = backButton;
+    
+    NSMutableArray *tbitems = [[NSMutableArray alloc] init];
+    UIBarButtonItem *spaceButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spaceButton1.width = 5.0f;
+    UIBarButtonItem *spaceButton2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spaceButton2.width = 20.0f;
+    
+    [tbitems addObject:self.nextButton];
+    [tbitems addObject:spaceButton1];
+    [tbitems addObject:self.prevButton];
+    [tbitems addObject:spaceButton2];
+    
+    self.navigationItem.rightBarButtonItems = tbitems;
+    [self.prevButton setEnabled:NO];
+    if (self.albums.isNextPage) {
+        [self.nextButton setEnabled:YES];
+    }
+    else {
+        [self.nextButton setEnabled:NO];
+    }
+
 }
 
 
@@ -55,6 +91,9 @@
 {
     [super viewDidUnload];
     self.albums = nil;
+    self.currentAlbumsList = nil;
+    self.prevButton = nil;
+    self.nextButton = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -72,7 +111,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [albums count];
+    return [currentAlbumsList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -83,7 +122,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    RAWretchAlbum *album = [albums objectAtIndex:indexPath.row];
+    RAWretchAlbum *album = [currentAlbumsList objectAtIndex:indexPath.row];
     cell.textLabel.text = album.name;
     
     NSURL *url = [NSURL URLWithString:album.coverURL];
@@ -104,7 +143,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RAWretchAlbum *album = [albums objectAtIndex:indexPath.row];
+    RAWretchAlbum *album = [currentAlbumsList objectAtIndex:indexPath.row];
     NSArray* photos = [album photoURLsOfCurrentPage];
     PhotosViewController *controller = [[PhotosViewController alloc] initWithPhotos:photos];
     
@@ -118,13 +157,49 @@
 }
 
 
-#pragma mark - Action Methods
+#pragma mark - Other Methods
 
 - (void)backToMainView:(id)sender
 {
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
+- (void)prevPage:(id)sender
+{
+    if (self.albums.currentPageNumber > 1) {
+        self.albums.currentPageNumber--;
+    }
+    
+    if (self.albums.currentPageNumber <=1) {
+        [self.prevButton setEnabled:NO];
+    }
+    
+    [self updateTable];
+}
+
+- (void)nextPage:(id)sender
+{
+    self.albums.currentPageNumber++;
+    
+    if (self.albums.currentPageNumber > 1) {
+        [self.prevButton setEnabled:YES];
+    }
+    
+    [self updateTable];
+}
+
+- (void)updateTable
+{
+    self.currentAlbumsList = [self.albums currentList];
+    [self.tableView reloadData];
+    
+    if (self.albums.isNextPage) {
+        [self.nextButton setEnabled:YES];
+    }
+    else {
+        [self.nextButton setEnabled:NO];
+    }
+}
 
 #pragma mark - Private Methods
 

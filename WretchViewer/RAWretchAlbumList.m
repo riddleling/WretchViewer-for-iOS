@@ -144,6 +144,9 @@
     if (matchsNumber) {
         isNextPage =YES;
     }
+    else {
+        isNextPage = NO;
+    }
 }
 
 

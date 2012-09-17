@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RAWretchAlbumList.h"
 
 @interface AlbumsTableViewController : UITableViewController
 
-@property (strong, nonatomic) NSArray *albums;
+@property (strong, nonatomic) RAWretchAlbumList *albums;
+@property (strong, nonatomic) NSArray *currentAlbumsList;
+@property (strong, nonatomic) UIBarButtonItem *nextButton;
+@property (strong, nonatomic) UIBarButtonItem *prevButton;
 
-- (id)initWithStyle:(UITableViewStyle)style albums:(NSArray *)array;
+- (id)initWithStyle:(UITableViewStyle)style albums:(RAWretchAlbumList *)albumsListObj;
 
 @end
