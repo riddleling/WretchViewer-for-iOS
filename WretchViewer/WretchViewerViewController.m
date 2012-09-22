@@ -56,6 +56,8 @@
     
     AlbumsTableViewController *masterViewController = [[AlbumsTableViewController alloc] initWithStyle:UITableViewStylePlain albums:albums];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
+    navController.navigationBar.tintColor = [UIColor blackColor];
+    
     [self presentViewController:navController animated:NO completion:^{}];
     
 }

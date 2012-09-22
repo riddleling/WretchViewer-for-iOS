@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSArray *currentAlbumsList;
 @property (strong, nonatomic) UIBarButtonItem *nextButton;
 @property (strong, nonatomic) UIBarButtonItem *prevButton;
+@property (strong, nonatomic) UIActivityIndicatorView *indicator;
 
 - (id)initWithStyle:(UITableViewStyle)style albums:(RAWretchAlbumList *)albumsListObj;
 

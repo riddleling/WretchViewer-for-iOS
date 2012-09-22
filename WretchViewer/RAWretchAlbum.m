@@ -109,7 +109,10 @@
     NSUInteger matchsNumber = [expression numberOfMatchesInString:htmlString options:0 range:NSMakeRange(0, [htmlString length])];
     
     if (matchsNumber) {
-        isNextPage =YES;
+        isNextPage = YES;
+    }
+    else {
+        isNextPage = NO;
     }
     
 }

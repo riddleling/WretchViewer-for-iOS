@@ -22,6 +22,9 @@
     self.viewController = [[WretchViewerViewController alloc] initWithNibName:@"WretchViewerViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+    
     return YES;
 }
 

@@ -11,12 +11,12 @@
 #import "PhotosViewController.h"
 
 
-@interface AlbumsTableViewController (MyMethods)
+@interface AlbumsTableViewController (PrivateMethods)
+- (void)updateTable;
 - (void)backToMainView:(id)sender;
 - (void)prevPage:(id)sender;
 - (void)nextPage:(id)sender;
-- (void)updateTable;
--(UIImage*)_centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect;
+- (UIImage*)_centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect;
 @end
 
 
@@ -26,6 +26,7 @@
 @synthesize currentAlbumsList;
 @synthesize nextButton;
 @synthesize prevButton;
+@synthesize indicator;
 
 
 - (id)initWithStyle:(UITableViewStyle)style albums:(RAWretchAlbumList *)albumsListObj
@@ -33,7 +34,7 @@
     self = [super initWithStyle:style];
     if (self) {
         self.albums = albumsListObj;
-        self.currentAlbumsList = [self.albums currentList];
+        
         self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
@@ -42,6 +43,7 @@
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(prevPage:)];
+        self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, 320, 25)];
     }
     return self;
 }
@@ -60,7 +62,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.title = [albums wretchID];
+    
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToMainView:)];
     self.navigationItem.leftBarButtonItem = backButton;
     
@@ -76,13 +80,20 @@
     [tbitems addObject:spaceButton2];
     
     self.navigationItem.rightBarButtonItems = tbitems;
+    
+    [self.indicator setHidesWhenStopped:YES];
+    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+    [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
+    [self.indicator setAlpha:0.8f];
+    
+    [self.navigationController.view addSubview:self.indicator];
+    
+    [albums addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
+    
     [self.prevButton setEnabled:NO];
-    if (self.albums.isNextPage) {
-        [self.nextButton setEnabled:YES];
-    }
-    else {
-        [self.nextButton setEnabled:NO];
-    }
+    [self.nextButton setEnabled:NO];
+    
+    [self updateTable];
 
 }
 
@@ -90,15 +101,41 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    
     self.albums = nil;
     self.currentAlbumsList = nil;
     self.prevButton = nil;
     self.nextButton = nil;
+    self.indicator = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+
+#pragma mark - KVO Methods
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([object isMemberOfClass:[RAWretchAlbumList class]]) {
+        if ([keyPath isEqualToString:@"currentPageNumber"]) {
+            int pages = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
+            //NSLog(@"pages: %d", pages);
+
+            // get current album list and update tableView, and update nextButton.
+            [self updateTable];
+
+            // setup prevButton
+            if (pages <= 1) {
+                [self.prevButton setEnabled:NO];
+            }
+            else {
+                [self.prevButton setEnabled:YES];
+            }
+        }
+    }
 }
 
 
@@ -144,8 +181,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RAWretchAlbum *album = [currentAlbumsList objectAtIndex:indexPath.row];
-    NSArray* photos = [album photoURLsOfCurrentPage];
-    PhotosViewController *controller = [[PhotosViewController alloc] initWithPhotos:photos];
+    album.currentPageNumber = 1;
+    PhotosViewController *controller = [[PhotosViewController alloc] initWithAlbum:album];
     
     controller.title = [[tableView cellForRowAtIndexPath:indexPath].textLabel text];
     [self.navigationController pushViewController:controller animated:YES];
@@ -157,10 +194,31 @@
 }
 
 
-#pragma mark - Other Methods
+#pragma mark - Private Methods
+
+- (void)updateTable
+{
+    [self.indicator startAnimating];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // get current list
+        self.currentAlbumsList = [self.albums currentList];
+        // update UI
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            if (self.albums.isNextPage) {
+                [self.nextButton setEnabled:YES];
+            }
+            else {
+                [self.nextButton setEnabled:NO];
+            }
+            [self.indicator stopAnimating];
+        });
+    });
+}
 
 - (void)backToMainView:(id)sender
 {
+    [albums removeObserver:self forKeyPath:@"currentPageNumber"];
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -169,39 +227,13 @@
     if (self.albums.currentPageNumber > 1) {
         self.albums.currentPageNumber--;
     }
-    
-    if (self.albums.currentPageNumber <=1) {
-        [self.prevButton setEnabled:NO];
-    }
-    
-    [self updateTable];
 }
 
 - (void)nextPage:(id)sender
 {
     self.albums.currentPageNumber++;
-    
-    if (self.albums.currentPageNumber > 1) {
-        [self.prevButton setEnabled:YES];
-    }
-    
-    [self updateTable];
 }
 
-- (void)updateTable
-{
-    self.currentAlbumsList = [self.albums currentList];
-    [self.tableView reloadData];
-    
-    if (self.albums.isNextPage) {
-        [self.nextButton setEnabled:YES];
-    }
-    else {
-        [self.nextButton setEnabled:NO];
-    }
-}
-
-#pragma mark - Private Methods
 
 -(UIImage*) _centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect
 {
