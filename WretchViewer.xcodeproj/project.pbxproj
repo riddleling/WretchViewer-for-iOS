@@ -10,6 +10,7 @@
 		253BE2511600F91F00F35D67 /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253BE2501600F91F00F35D67 /* PhotosViewController.m */; };
 		253CC14015FFA6C70036D131 /* AlbumsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */; };
 		253FFA8B15FA687A00BB28EF /* RAWretchAlbumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */; };
+		257ECCEF160F3D4F00F6E712 /* ShowPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 257ECCEE160F3D4F00F6E712 /* ShowPhotoViewController.m */; };
 		25E3D18715F3DE2B0078E5FD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18615F3DE2B0078E5FD /* UIKit.framework */; };
 		25E3D18915F3DE2B0078E5FD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18815F3DE2B0078E5FD /* Foundation.framework */; };
 		25E3D18B15F3DE2B0078E5FD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18A15F3DE2B0078E5FD /* CoreGraphics.framework */; };
@@ -29,6 +30,8 @@
 		253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumsTableViewController.m; sourceTree = "<group>"; };
 		253FFA8915FA687A00BB28EF /* RAWretchAlbumList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAWretchAlbumList.h; sourceTree = "<group>"; };
 		253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAWretchAlbumList.m; sourceTree = "<group>"; };
+		257ECCED160F3D4F00F6E712 /* ShowPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowPhotoViewController.h; sourceTree = "<group>"; };
+		257ECCEE160F3D4F00F6E712 /* ShowPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowPhotoViewController.m; sourceTree = "<group>"; };
 		25E3D18215F3DE2B0078E5FD /* WretchViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WretchViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25E3D18615F3DE2B0078E5FD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		25E3D18815F3DE2B0078E5FD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -102,6 +105,8 @@
 				253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */,
 				253BE24F1600F91F00F35D67 /* PhotosViewController.h */,
 				253BE2501600F91F00F35D67 /* PhotosViewController.m */,
+				257ECCED160F3D4F00F6E712 /* ShowPhotoViewController.h */,
+				257ECCEE160F3D4F00F6E712 /* ShowPhotoViewController.m */,
 				253CC13E15FFA6C70036D131 /* AlbumsTableViewController.h */,
 				253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */,
 				25E3D19815F3DE2B0078E5FD /* WretchViewerViewController.h */,
@@ -194,6 +199,7 @@
 				253FFA8B15FA687A00BB28EF /* RAWretchAlbumList.m in Sources */,
 				253CC14015FFA6C70036D131 /* AlbumsTableViewController.m in Sources */,
 				253BE2511600F91F00F35D67 /* PhotosViewController.m in Sources */,
+				257ECCEF160F3D4F00F6E712 /* ShowPhotoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

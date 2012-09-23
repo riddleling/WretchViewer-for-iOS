@@ -183,8 +183,7 @@
     RAWretchAlbum *album = [currentAlbumsList objectAtIndex:indexPath.row];
     album.currentPageNumber = 1;
     PhotosViewController *controller = [[PhotosViewController alloc] initWithAlbum:album];
-    
-    controller.title = [[tableView cellForRowAtIndexPath:indexPath].textLabel text];
+
     [self.navigationController pushViewController:controller animated:YES];
 }
 

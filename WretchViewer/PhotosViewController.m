@@ -8,6 +8,7 @@
 
 #import "PhotosViewController.h"
 #import "RAWretchPhotoURL.h"
+#import "ShowPhotoViewController.h"
 
 @interface PhotosViewController (PrivateMethods)
 - (void)updateImages;
@@ -17,6 +18,7 @@
 -(UIImage*) _centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect;
 @end
 
+
 @implementation PhotosViewController
 
 @synthesize album;
@@ -25,6 +27,7 @@
 @synthesize nextButton;
 @synthesize indicator;
 @synthesize images;
+
 
 - (id)initWithAlbum:(RAWretchAlbum *)aAlbum
 {
@@ -60,11 +63,13 @@
 }
  */
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    //self.view.backgroundColor = [UIColor whiteColor];
+    self.title = self.album.name;
     
     NSMutableArray *tbitems = [[NSMutableArray alloc] init];
     UIBarButtonItem *spaceButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -125,6 +130,7 @@
     
 }
 
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -137,10 +143,12 @@
     self.images = nil;
 }
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
 
 - (void)dealloc
 {
@@ -216,6 +224,7 @@
     }
 }
 
+
 - (void)nextPage:(id)sender
 {
     self.album.currentPageNumber++;
@@ -225,27 +234,17 @@
 - (void)showPhoto:(id)sender
 {
     int tag = [sender tag];
-    NSLog(@"tag: %d", tag);
-    NSLog(@"photos list count :%d", [currentPhotosList count]);
+    //NSLog(@"tag: %d", tag);
     
     if (tag < [currentPhotosList count]) {
-        UIViewController *controller = [[UIViewController alloc] init];
-        controller.title = @"Photo";
-        RAWretchPhotoURL *photo = [currentPhotosList objectAtIndex:tag];
-    
-        NSURL *url = [NSURL URLWithString:[photo convertToFileURL]];
-        NSData *data = [[NSData alloc] initWithContentsOfURL:url];
-        UIImage *image = [[UIImage alloc] initWithData:data];
-    
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480-20-44)];
-        imageView.image = image;
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        [controller.view addSubview:imageView];
+        RAWretchPhotoURL *photoURL = [currentPhotosList objectAtIndex:tag];
+        ShowPhotoViewController *controller = [[ShowPhotoViewController alloc] initWithPhotoURL:photoURL];
     
         [self.navigationController pushViewController:controller animated:YES];
     }
     
 }
+
 
 -(UIImage*) _centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect
 {
