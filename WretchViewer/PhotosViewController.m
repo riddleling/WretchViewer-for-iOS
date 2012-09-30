@@ -15,7 +15,6 @@
 - (void)prevPage:(id)sender;
 - (void)nextPage:(id)sender;
 - (void)showPhoto:(id)sender;
--(UIImage*) _centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect;
 @end
 
 
@@ -36,17 +35,6 @@
     {
         self.album = aAlbum;
         self.images = [[NSMutableArray alloc] init];
-        
-        self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(nextPage:)];
-        self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(prevPage:)];
-        self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, 320, 25)];
-        
     }
     return self;
 }
@@ -63,33 +51,57 @@
 }
  */
 
+- (void)loadView
+{
+    [super loadView];
+    
+    // setup BarButtonItem
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(nextPage:)];
+    self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(prevPage:)];
+    
+    NSMutableArray *tbitems = [[NSMutableArray alloc] init];
+    
+    // setup Space BarButtonItem
+    UIBarButtonItem *spaceButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spaceButton1.width = 5.0f;
+    UIBarButtonItem *spaceButton2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spaceButton2.width = 20.0f;
+
+    // add BarButtonItems
+    [tbitems addObject:self.nextButton];
+    [tbitems addObject:spaceButton1];
+    [tbitems addObject:self.prevButton];
+    [tbitems addObject:spaceButton2];
+
+    self.navigationItem.rightBarButtonItems = tbitems;
+    
+    
+    // setup indicator
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, 320, 25)];
+    [self.indicator setHidesWhenStopped:YES];
+    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+    [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
+    [self.indicator setAlpha:0.8f];
+
+    [self.navigationController.view addSubview:self.indicator];
+    
+    // setup title
+    self.title = self.album.name;
+    
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     //self.view.backgroundColor = [UIColor whiteColor];
-    self.title = self.album.name;
-    
-    NSMutableArray *tbitems = [[NSMutableArray alloc] init];
-    UIBarButtonItem *spaceButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spaceButton1.width = 5.0f;
-    UIBarButtonItem *spaceButton2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spaceButton2.width = 20.0f;
-    
-    [tbitems addObject:self.nextButton];
-    [tbitems addObject:spaceButton1];
-    [tbitems addObject:self.prevButton];
-    [tbitems addObject:spaceButton2];
-    
-    self.navigationItem.rightBarButtonItems = tbitems;
-    
-    [self.indicator setHidesWhenStopped:YES];
-    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-    [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
-    [self.indicator setAlpha:0.8f];
-    
-    [self.navigationController.view addSubview:self.indicator];
     
     [album addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
     
@@ -243,20 +255,6 @@
         [self.navigationController pushViewController:controller animated:YES];
     }
     
-}
-
-
--(UIImage*) _centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect
-{
-    
-    CGSize size= thumbRect.size;
-    UIGraphicsBeginImageContext(size);  
-    //calculation
-    [inImage drawInRect:CGRectMake((size.width-inImage.size.width)/2, (size.height-inImage.size.height)/2, inImage.size.width, inImage.size.height)];
-    UIImage *newThumbnail = UIGraphicsGetImageFromCurrentImageContext();        
-    // pop the context
-    UIGraphicsEndImageContext();
-    return newThumbnail;
 }
 
 

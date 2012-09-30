@@ -12,6 +12,10 @@
 
 @property (strong, nonatomic) NSString *urlValue;
 @property (strong, nonatomic) NSString *thumbnailURL;
+@property (readonly) BOOL isPrevPage;
+@property (readonly) BOOL isNextPage;
+@property (readonly, strong, nonatomic) NSString *prevPageURL;
+@property (readonly, strong, nonatomic) NSString *nextPageURL;
 
 
 - (id)initWithURL:(NSString *)photoURLString withThumbnailURL:(NSString *)thumbnailURLString;

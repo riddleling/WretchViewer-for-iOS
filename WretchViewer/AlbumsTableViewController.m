@@ -34,39 +34,29 @@
     self = [super initWithStyle:style];
     if (self) {
         self.albums = albumsListObj;
-        
-        self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(nextPage:)];
-        self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(prevPage:)];
-        self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, 320, 25)];
     }
     return self;
 }
 
-/*
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
 
-- (void)viewDidLoad
+- (void)loadView
 {
-    [super viewDidLoad];
+    [super loadView];
     
-    self.title = [albums wretchID];
-    
+    // setup Back BarButtonItem
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToMainView:)];
     self.navigationItem.leftBarButtonItem = backButton;
+    
+    
+    // setup switch BarButtonItem
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(nextPage:)];
+    self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(prevPage:)];
     
     NSMutableArray *tbitems = [[NSMutableArray alloc] init];
     UIBarButtonItem *spaceButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -81,12 +71,29 @@
     
     self.navigationItem.rightBarButtonItems = tbitems;
     
+    
+    // setup indicator
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, 320, 25)];
     [self.indicator setHidesWhenStopped:YES];
     [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
     [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
     [self.indicator setAlpha:0.8f];
     
     [self.navigationController.view addSubview:self.indicator];
+
+    
+    
+    
+    
+    
+    // setup title
+    self.title = [albums wretchID];
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
     [albums addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
     
@@ -94,7 +101,6 @@
     [self.nextButton setEnabled:NO];
     
     [self updateTable];
-
 }
 
 
@@ -234,7 +240,7 @@
 }
 
 
--(UIImage*) _centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect
+- (UIImage*)_centerImage:(UIImage *)inImage inRect:(CGRect) thumbRect
 {
     
     CGSize size= thumbRect.size;
