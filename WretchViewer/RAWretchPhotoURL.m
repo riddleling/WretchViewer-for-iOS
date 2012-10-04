@@ -2,9 +2,9 @@
 //  RAWretchPhotoURL.m
 //  WretchViewer
 //
-//  Created by Ling Riddle on 12/9/3.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Created by Wei-Chen Ling on 12/9/3.
 //
+
 
 #import "RAWretchPhotoURL.h"
 
@@ -101,7 +101,7 @@
         NSRange range = [urlMatchStr rangeAtIndex:1];
         prevPageURL = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/%@", [htmlString substringWithRange:range]];
         isPrevPage = YES;
-        //NSLog(@"prev url: %@", prevPageURL);
+        //NSLog(@"prev url: (%@)", prevPageURL);
         return;
     }
     
@@ -113,7 +113,7 @@
         NSRange range = [urlMatchStr2 rangeAtIndex:1];
         prevPageURL = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/%@", [htmlString substringWithRange:range]];
         isPrevPage = YES;
-        NSLog(@"prev url: %@", prevPageURL);
+        //NSLog(@"prev url: (%@)", prevPageURL);
         return;
     }
     
@@ -133,7 +133,7 @@
         NSRange range = [urlMatchStr rangeAtIndex:1];
         nextPageURL = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/%@", [htmlString substringWithRange:range]];
         isNextPage = YES;
-        //NSLog(@"next url: %@", nextPageURL);
+        //NSLog(@"next url: (%@)", nextPageURL);
         return;
     }
     
@@ -145,7 +145,7 @@
         NSRange range = [urlMatchStr2 rangeAtIndex:1];
         nextPageURL = [[NSString alloc] initWithFormat:@"http://www.wretch.cc/album/%@", [htmlString substringWithRange:range]];
         isNextPage = YES;
-        NSLog(@"next url: %@", nextPageURL);
+        //NSLog(@"next url: (%@)", nextPageURL);
         return;
     }
     

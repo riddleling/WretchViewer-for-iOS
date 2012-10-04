@@ -2,9 +2,9 @@
 //  RAWretchAlbumList.m
 //  WretchViewer
 //
-//  Created by Ling Riddle on 12/9/8.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Created by Wei-Chen Ling on 12/9/8.
 //
+
 
 #import "RAWretchAlbumList.h"
 #import "RAWretchAlbum.h"
@@ -109,12 +109,13 @@
         }
     
         // get pictures
-        NSString *regexpStr3 = [[NSString alloc] initWithFormat:@"(\\d+)pictures\\s*</font>"];
+        NSString *regexpStr3 = [[NSString alloc] initWithFormat:@"(\\d+(?:pictures|張相片))\\s+?</font>"];
         NSRegularExpression *expression3 = [NSRegularExpression regularExpressionWithPattern:regexpStr3
                                                                                      options:NSRegularExpressionCaseInsensitive
                                                                                        error:nil];
         NSArray *array3 = [expression3 matchesInString:htmlString options:0 range:NSMakeRange(0, [htmlString length])];
-    
+        //NSLog(@"pictures count: %d", array3.count);
+        
         int index = 0;
         for (NSTextCheckingResult *matchStr in array3) {
             NSRange range = [matchStr rangeAtIndex:1];
@@ -124,6 +125,7 @@
                 album.pictures = picturesStr;
             }
             index++;
+            //NSLog(@"%d: %@", index, picturesStr);
         }
         
         return [albums copy];

@@ -2,9 +2,9 @@
 //  ShowPhotoViewController.h
 //  WretchViewer
 //
-//  Created by Ling Riddle on 12/9/23.
+//  Created by Wei-Chen Ling on 12/9/23.
 //
-//
+
 
 #import <UIKit/UIKit.h>
 #import "RAWretchPhotoURL.h"

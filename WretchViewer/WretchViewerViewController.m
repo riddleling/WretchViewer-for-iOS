@@ -2,19 +2,20 @@
 //  WretchViewerViewController.m
 //  WretchViewer
 //
-//  Created by Ling Riddle on 12/9/3.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Created by Wei-Chen Ling on 12/9/3.
 //
+
 
 #import "WretchViewerViewController.h"
 #import "RAWretchAlbumList.h"
 #import "RAWretchAlbum.h"
 #import "AlbumsTableViewController.h"
 
-
+/*
 @interface WretchViewerViewController ()
 
 @end
+*/
 
 
 @implementation WretchViewerViewController
@@ -40,7 +41,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 

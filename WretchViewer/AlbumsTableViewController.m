@@ -2,9 +2,9 @@
 //  AlbumsTableViewController.m
 //  WretchViewer
 //
-//  Created by Ling Riddle on 12/9/12.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Created by Wei-Chen Linge on 12/9/12.
 //
+
 
 #import "AlbumsTableViewController.h"
 #import "RAWretchAlbum.h"
@@ -49,11 +49,11 @@
     
     
     // setup switch BarButtonItem
-    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@"▼"
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(nextPage:)];
-    self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
+    self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"▲"
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(prevPage:)];
@@ -73,7 +73,7 @@
     
     
     // setup indicator
-    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, 320, 25)];
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, 35)];
     [self.indicator setHidesWhenStopped:YES];
     [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
     [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
@@ -81,10 +81,6 @@
     
     [self.navigationController.view addSubview:self.indicator];
 
-    
-    
-    
-    
     
     // setup title
     self.title = [albums wretchID];
@@ -115,9 +111,16 @@
     self.indicator = nil;
 }
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+
+- (void)dealloc
+{
+    [albums removeObserver:self forKeyPath:@"currentPageNumber"];
 }
 
 
@@ -127,19 +130,11 @@
 {
     if ([object isMemberOfClass:[RAWretchAlbumList class]]) {
         if ([keyPath isEqualToString:@"currentPageNumber"]) {
-            int pages = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
+            //int pages = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
             //NSLog(@"pages: %d", pages);
 
             // get current album list and update tableView, and update nextButton.
             [self updateTable];
-
-            // setup prevButton
-            if (pages <= 1) {
-                [self.prevButton setEnabled:NO];
-            }
-            else {
-                [self.prevButton setEnabled:YES];
-            }
         }
     }
 }
@@ -174,7 +169,7 @@
     UIImage *coverImage = [self _centerImage:tempImage inRect:CGRectMake(0, 0, 70, 65)];
     cell.imageView.image = coverImage;
 
-    NSString *picturesStr = [[NSString alloc] initWithFormat:@"(%@)", album.pictures];
+    NSString *picturesStr = [[NSString alloc] initWithFormat:@"%@", album.pictures];
     cell.detailTextLabel.text = picturesStr;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
@@ -210,12 +205,24 @@
         // update UI
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
+            
+            // setup prevButton
+            if (self.albums.currentPageNumber <= 1) {
+                [self.prevButton setEnabled:NO];
+            }
+            else {
+                [self.prevButton setEnabled:YES];
+            }
+            
+            // setup nextButton
             if (self.albums.isNextPage) {
                 [self.nextButton setEnabled:YES];
             }
             else {
                 [self.nextButton setEnabled:NO];
             }
+            
+            // stop indicator
             [self.indicator stopAnimating];
         });
     });
@@ -223,12 +230,14 @@
 
 - (void)backToMainView:(id)sender
 {
-    [albums removeObserver:self forKeyPath:@"currentPageNumber"];
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)prevPage:(id)sender
 {
+    [self.prevButton setEnabled:NO];
+    [self.nextButton setEnabled:NO];
+    
     if (self.albums.currentPageNumber > 1) {
         self.albums.currentPageNumber--;
     }
@@ -236,6 +245,9 @@
 
 - (void)nextPage:(id)sender
 {
+    [self.prevButton setEnabled:NO];
+    [self.nextButton setEnabled:NO];
+    
     self.albums.currentPageNumber++;
 }
 

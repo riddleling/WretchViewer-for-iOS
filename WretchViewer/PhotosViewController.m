@@ -2,9 +2,9 @@
 //  PhotosViewController.m
 //  WretchViewer
 //
-//  Created by Ling Riddle on 12/9/13.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Created by Wei-Chen Ling on 12/9/13.
 //
+
 
 #import "PhotosViewController.h"
 #import "RAWretchPhotoURL.h"
@@ -56,11 +56,11 @@
     [super loadView];
     
     // setup BarButtonItem
-    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@"▼"
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(nextPage:)];
-    self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
+    self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"▲"
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(prevPage:)];
@@ -83,11 +83,11 @@
     
     
     // setup indicator
-    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, 320, 25)];
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, 30)];
     [self.indicator setHidesWhenStopped:YES];
     [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
     [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
-    [self.indicator setAlpha:0.8f];
+    [self.indicator setAlpha:0.9f];
 
     [self.navigationController.view addSubview:self.indicator];
     
@@ -174,19 +174,11 @@
 {
     if ([object isMemberOfClass:[RAWretchAlbum class]]) {
         if ([keyPath isEqualToString:@"currentPageNumber"]) {
-            int pages = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
+            //int pages = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
             //NSLog(@"pages: %d", pages);
             
             // get and update current images, and update nextButton.
             [self updateImages];
-            
-            // setup prevButton
-            if (pages <= 1) {
-                [self.prevButton setEnabled:NO];
-            }
-            else {
-                [self.prevButton setEnabled:YES];
-            }
         }
     }
 }
@@ -204,25 +196,50 @@
     }
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // get photoURLs
         self.currentPhotosList = [album photoURLsOfCurrentPage];
-        // update image and nextButton
-        dispatch_async(dispatch_get_main_queue(), ^{
-            int tag = 0;
-            for (RAWretchPhotoURL *photo in self.currentPhotosList) {
-                NSURL *url = [NSURL URLWithString:photo.thumbnailURL];
-                NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+        
+        // update images
+        int tag = 0;
+        for (RAWretchPhotoURL *photo in self.currentPhotosList) {
+            NSURL *url = [NSURL URLWithString:photo.thumbnailURL];
+            //NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+            
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
+                                                        cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                    timeoutInterval:30];
+            NSURLResponse *urlResponse;
+            NSError *error;
+            NSData *data = [NSURLConnection sendSynchronousRequest:urlRequest
+                                         returningResponse:&urlResponse
+                                                     error:&error];
+            // update thumbnail image
+            dispatch_async(dispatch_get_main_queue(), ^{
                 UIImage *image = [[UIImage alloc] initWithData:data];
-                
                 UIImageView *imageView = [images objectAtIndex:tag];
                 [imageView setImage:image];
-                tag++;
+            });
+            tag++;
+        }
+        
+        // update button and indicator
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // setup prevButton
+            if (self.album.currentPageNumber <= 1) {
+                [self.prevButton setEnabled:NO];
             }
+            else {
+                [self.prevButton setEnabled:YES];
+            }
+            
+            // setup nextButton
             if (self.album.isNextPage) {
                 [self.nextButton setEnabled:YES];
             }
             else {
                 [self.nextButton setEnabled:NO];
             }
+            // stop indicator
             [self.indicator stopAnimating];
         });
     });
@@ -231,6 +248,9 @@
 
 - (void)prevPage:(id)sender
 {
+    [self.prevButton setEnabled:NO];
+    [self.nextButton setEnabled:NO];
+    
     if (self.album.currentPageNumber > 1) {
         self.album.currentPageNumber--;
     }
@@ -239,6 +259,9 @@
 
 - (void)nextPage:(id)sender
 {
+    [self.prevButton setEnabled:NO];
+    [self.nextButton setEnabled:NO];
+    
     self.album.currentPageNumber++;
 }
 

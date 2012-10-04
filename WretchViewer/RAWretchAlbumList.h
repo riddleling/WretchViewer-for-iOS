@@ -2,9 +2,9 @@
 //  RAWretchAlbumList.h
 //  WretchViewer
 //
-//  Created by Ling Riddle on 12/9/8.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Created by Wei-Chen Ling on 12/9/8.
 //
+
 
 #import <Foundation/Foundation.h>
 

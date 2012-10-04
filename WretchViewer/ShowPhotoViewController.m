@@ -2,9 +2,9 @@
 //  ShowPhotoViewController.m
 //  WretchViewer
 //
-//  Created by Ling Riddle on 12/9/23.
+//  Created by Wei-Chen Ling on 12/9/23.
 //
-//
+
 
 #import "ShowPhotoViewController.h"
 
@@ -43,11 +43,11 @@
     [super loadView];
     
     // setup BarButtonItem
-    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@">"
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@"▼"
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(nextPage:)];
-    self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
+    self.prevButton = [[UIBarButtonItem alloc] initWithTitle:@"▲"
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(prevPage:)];
@@ -67,10 +67,13 @@
     [tbitems addObject:spaceButton2];
     self.navigationItem.rightBarButtonItems = tbitems;
     
+    // get screen size
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     
-    //setup imageView and scrollView
-    self.photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480-20-44)];
-    self.photoScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 480-20-44)];
+    // setup imageView and scrollView
+    CGRect viewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height-20-44);
+    self.photoImageView = [[UIImageView alloc] initWithFrame:viewFrame];
+    self.photoScrollView = [[UIScrollView alloc] initWithFrame:viewFrame];
 
     [self.photoScrollView setDelegate:self];
     [photoScrollView addSubview:photoImageView];
@@ -78,7 +81,7 @@
     [self.view addSubview:photoScrollView];
     
     // setup indicator
-    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, 320, 25)];
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, screenSize.width, 30)];
     [self.indicator setHidesWhenStopped:YES];
     [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
     [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
@@ -167,6 +170,8 @@
 
 - (void)prevPage:(id)sender
 {
+    [self.prevButton setEnabled:NO];
+    [self.nextButton setEnabled:NO];
     RAWretchPhotoURL *prevPhotoURL = [[RAWretchPhotoURL alloc] initWithURL:self.photoURL.prevPageURL withThumbnailURL:nil];
     self.photoURL = prevPhotoURL;
     [self photoDisplay];
@@ -176,6 +181,8 @@
 
 - (void)nextPage:(id)sender
 {
+    [self.prevButton setEnabled:NO];
+    [self.nextButton setEnabled:NO];
     RAWretchPhotoURL *nextPhotoURL = [[RAWretchPhotoURL alloc] initWithURL:self.photoURL.nextPageURL withThumbnailURL:nil];
     self.photoURL = nextPhotoURL;
     [self photoDisplay];
@@ -186,20 +193,27 @@
 {
     [self.indicator startAnimating];
     self.photoImageView.image = nil;
+    // Reset zoomScale.
     self.photoScrollView.zoomScale = 1.0f;
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSURL *url = [NSURL URLWithString:[self.photoURL convertToFileURL]];
         NSData *data;
-        if (url != nil) {
-            data = [[NSData alloc] initWithContentsOfURL:url];
+        if (url != nil) {            
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
+                                                        cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                    timeoutInterval:30];
+            NSURLResponse *urlResponse;
+            NSError *error;
+            data = [NSURLConnection sendSynchronousRequest:urlRequest
+                                                         returningResponse:&urlResponse
+                                                                     error:&error];
         }
         else {
-            //NSURL *turl = [NSURL URLWithString:[self.photoURL thumbnailURL]];
-            //data = [[NSData alloc] initWithContentsOfURL:turl];
             data = nil;
         }
         
+        // update UI
         dispatch_async(dispatch_get_main_queue(), ^{
             if (data) {
                 UIImage *image = [[UIImage alloc] initWithData:data];
@@ -207,7 +221,7 @@
                 self.photoImageView.image = image;
             }
             else {
-                self.photoImageView.frame = CGRectMake(0, 0, 320, 480-20-44);
+                self.photoImageView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-20-44);
                 self.photoImageView.image = nil;
             }
             
@@ -215,11 +229,22 @@
             //self.photoScrollView.backgroundColor = [UIColor greenColor];
             
             self.photoScrollView.contentSize = self.photoImageView.frame.size;
-            self.photoScrollView.minimumZoomScale = self.photoScrollView.frame.size.width / self.photoImageView.frame.size.width;
+            if (self.photoScrollView.frame.size.width < self.photoImageView.frame.size.width) {
+                self.photoScrollView.minimumZoomScale = self.photoScrollView.frame.size.width / self.photoImageView.frame.size.width;
+            }
+            else {
+                self.photoScrollView.minimumZoomScale = 1.0f;
+            }
+            
             //NSLog(@"min zoom => %f", self.photoScrollView.minimumZoomScale);
             self.photoScrollView.maximumZoomScale = 5.0f;
-            self.photoScrollView.zoomScale = self.photoScrollView.minimumZoomScale;
+            self.photoScrollView.zoomScale = self.photoScrollView.frame.size.width / self.photoImageView.frame.size.width;
             
+            // centered photoImageView
+            if (self.photoScrollView.zoomScale == 1.0f) {
+                self.photoImageView.frame = [self centeredFrameForScrollView:self.photoScrollView andUIView:self.photoImageView];
+                //NSLog(@" => centered photoimageView");
+            }
             
             // stop indicator
             [self.indicator stopAnimating];
