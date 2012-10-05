@@ -59,7 +59,7 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
     navController.navigationBar.tintColor = [UIColor blackColor];
     
-    [self presentViewController:navController animated:NO completion:^{}];
+    [self presentViewController:navController animated:NO completion:nil];
     
 }
 

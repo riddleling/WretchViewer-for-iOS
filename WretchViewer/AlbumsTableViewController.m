@@ -99,7 +99,7 @@
     [self updateTable];
 }
 
-
+/*
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -109,6 +109,16 @@
     self.prevButton = nil;
     self.nextButton = nil;
     self.indicator = nil;
+}*/
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ([self.indicator isAnimating]) {
+        [self.indicator stopAnimating];
+    }
 }
 
 

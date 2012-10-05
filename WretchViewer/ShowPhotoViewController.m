@@ -105,7 +105,7 @@
     [self photoDisplay];
 }
 
-
+/*
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -118,14 +118,23 @@
     self.nextButton = nil;
     self.prevButton = nil;
     
+}*/
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ([self.indicator isAnimating]) {
+        [self.indicator stopAnimating];
+    }
 }
+
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
 
 
 #pragma mark - Scroll View delegate

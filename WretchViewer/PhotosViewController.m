@@ -40,17 +40,6 @@
 }
 
 
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
- */
-
 - (void)loadView
 {
     [super loadView];
@@ -142,17 +131,28 @@
     
 }
 
-
+/*
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    
     self.album = nil;
     self.currentPhotosList = nil;
     self.prevButton = nil;
     self.nextButton = nil;
     self.indicator = nil;
     self.images = nil;
+}
+ */
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ([self.indicator isAnimating]) {
+        [self.indicator stopAnimating];
+    }
 }
 
 
@@ -164,8 +164,7 @@
 
 - (void)dealloc
 {
-    [album removeObserver:self forKeyPath:@"currentPageNumber"];
-    //NSLog(@"dealloc...");
+    [album removeObserver:self forKeyPath:@"currentPageNumber"];    
 }
 
 #pragma mark - KVO Methods
