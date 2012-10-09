@@ -14,6 +14,7 @@
 - (NSTextCheckingResult *)_matchString:(NSString *)aString regexpPattern:(NSString *)regexpStr;
 - (void)_searchPrevPageFromHtmlText:(NSString *)htmlString;
 - (void)_searchNextPageFromHtmlText:(NSString *)htmlString;
+- (void)_settingFileNameFromURLString:(NSString *)aString;
 @end
 
 
@@ -25,6 +26,7 @@
 @synthesize isNextPage;
 @synthesize prevPageURL;
 @synthesize nextPageURL;
+@synthesize fileName;
 
 
 - (id)initWithURL:(NSString *)photoURLString withThumbnailURL:(NSString *)thumbnailURLString
@@ -36,6 +38,7 @@
         self.thumbnailURL = thumbnailURLString;
         isPrevPage = NO;
         isNextPage = NO;
+        self.fileName = @"photo.jpg";
     }
     return self;
 }
@@ -63,6 +66,7 @@
     if (urlMatchStr) {
         NSRange range = [urlMatchStr rangeAtIndex:1];
         outString = [htmlText substringWithRange:range];
+        [self _settingFileNameFromURLString:outString];
         return outString;
     }
     else {
@@ -72,6 +76,7 @@
         if (urlMatchStr2) {
             NSRange range = [urlMatchStr2 rangeAtIndex:1];
             outString = [htmlText substringWithRange:range];
+            [self _settingFileNameFromURLString:outString];
             return outString;
         }
     }
@@ -90,6 +95,20 @@
     return matchStr;
 }
 
+
+- (void)_settingFileNameFromURLString:(NSString *)aString
+{
+    NSString *regexpStr = [[NSString alloc] initWithFormat:@"http://.+/(.+\\.jpg)\\?.+"];
+    NSTextCheckingResult *matchStr = [self _matchString:aString regexpPattern:regexpStr];
+    
+    if (matchStr) {
+        NSRange range = [matchStr rangeAtIndex:1];
+        self.fileName = [aString substringWithRange:range];
+    }
+    else {
+        self.fileName = @"photo.jpg";
+    }
+}
 
 
 - (void)_searchPrevPageFromHtmlText:(NSString *)htmlString

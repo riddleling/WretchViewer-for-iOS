@@ -14,6 +14,10 @@
 - (void)nextPage:(id)sender;
 - (void)prevPage:(id)sender;
 - (CGRect)centeredFrameForScrollView:(UIScrollView *)scroll andUIView:(UIView *)rView;
+- (void)tap2;
+- (void)otherAction:(id)sender;
+- (void)mailPhoto;
+- (void)savePhoto;
 @end
 
 
@@ -26,6 +30,8 @@
 @synthesize photoImageView;
 @synthesize nextButton;
 @synthesize prevButton;
+@synthesize actionButton;
+@synthesize photoData;
 
 
 - (id)initWithPhotoURL:(RAWretchPhotoURL *)aPhotoURL
@@ -37,6 +43,7 @@
     }
     return self;
 }
+
 
 - (void)loadView
 {
@@ -51,28 +58,25 @@
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(prevPage:)];
+    self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                      target:self
+                                                                      action:@selector(otherAction:)];
     
     NSMutableArray *tbitems = [[NSMutableArray alloc] init];
     
-    // setup Space BarButtonItem
-    UIBarButtonItem *spaceButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spaceButton1.width = 5.0f;
-    UIBarButtonItem *spaceButton2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spaceButton2.width = 20.0f;
-    
     // add BarButtonItems
+    [tbitems addObject:self.actionButton];
     [tbitems addObject:self.nextButton];
-    [tbitems addObject:spaceButton1];
     [tbitems addObject:self.prevButton];
-    [tbitems addObject:spaceButton2];
     self.navigationItem.rightBarButtonItems = tbitems;
     
     // get screen size
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-    
     // setup imageView and scrollView
     CGRect viewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height-20-44);
     self.photoImageView = [[UIImageView alloc] initWithFrame:viewFrame];
+    //self.photoImageView.userInteractionEnabled = YES;
+    
     self.photoScrollView = [[UIScrollView alloc] initWithFrame:viewFrame];
 
     [self.photoScrollView setDelegate:self];
@@ -90,6 +94,13 @@
     
     //setup title
     //self.title = @"Photo";
+    
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap2)];
+    doubleTap.numberOfTapsRequired = 2;
+    doubleTap.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:doubleTap];
+    
 
 }
 
@@ -101,6 +112,7 @@
     
     [self.prevButton setEnabled:NO];
     [self.nextButton setEnabled:NO];
+    [self.actionButton setEnabled:NO];
     
     [self photoDisplay];
 }
@@ -137,6 +149,38 @@
 }
 
 
+#pragma mark - Tap gesture Methods
+
+- (void)tap2
+{
+    //NSLog(@"tap 2!");
+    if (self.photoScrollView.zoomScale == photoScaleFitValue){
+        [self.photoScrollView setZoomScale:1.0f animated:YES];
+    }
+    else {
+        [self.photoScrollView setZoomScale:photoScaleFitValue animated:YES];
+    }
+    
+}
+
+
+#pragma mark - Action Sheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{    
+    switch (buttonIndex) {
+        case 0:
+            [self performSelector:@selector(mailPhoto)];
+            break;
+        case 1:
+            [self performSelector:@selector(savePhoto)];
+            break;
+        default:
+            break;
+    }
+}
+
+
 #pragma mark - Scroll View delegate
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
@@ -144,10 +188,23 @@
     return self.photoImageView;
 }
 
-
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
+    //CGFloat imageWidth = self.photoImageView.frame.size.width;
+    //CGFloat imageHeight = self.photoImageView.frame.size.height;
+    //CGFloat scrollWidth = self.photoScrollView.frame.size.width;
+    //CGFloat scrollHeigh = self.photoScrollView.frame.size.height;
+    //NSLog(@"(%f, %f) (%f, %f)", imageWidth, imageHeight, scrollWidth, scrollHeigh);
+    
     self.photoImageView.frame = [self centeredFrameForScrollView:scrollView andUIView:self.photoImageView];
+}
+
+
+#pragma mark - Mail compose delegate methods
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -177,6 +234,42 @@
 }
 
 
+- (void)otherAction:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select a action"
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:@"Mail Photo", @"Svae Photo", nil];
+    [actionSheet showInView:self.view];
+}
+
+
+- (void)mailPhoto
+{
+    NSLog(@"mail photo...");
+    
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
+        mailController.mailComposeDelegate = self;
+        
+        NSString *mailContent = [[NSString alloc] initWithFormat:@"Photo URL: %@", self.photoURL.urlValue];
+        [mailController setMessageBody:mailContent isHTML:NO];
+        [mailController setSubject:@"WretchViewer App sent a photo to you"];
+        if (self.photoData != nil) {
+            [mailController addAttachmentData:self.photoData mimeType:@"image/jpeg" fileName:self.photoURL.fileName];
+        }
+        
+        [self presentModalViewController:mailController animated:YES];
+    }
+}
+
+- (void)savePhoto
+{
+    NSLog(@"save photo...");
+}
+
+
 - (void)prevPage:(id)sender
 {
     [self.prevButton setEnabled:NO];
@@ -184,7 +277,6 @@
     RAWretchPhotoURL *prevPhotoURL = [[RAWretchPhotoURL alloc] initWithURL:self.photoURL.prevPageURL withThumbnailURL:nil];
     self.photoURL = prevPhotoURL;
     [self photoDisplay];
-    
 }
 
 
@@ -202,30 +294,30 @@
 {
     [self.indicator startAnimating];
     self.photoImageView.image = nil;
+    [self.actionButton setEnabled:NO];
     // Reset zoomScale.
     self.photoScrollView.zoomScale = 1.0f;
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSURL *url = [NSURL URLWithString:[self.photoURL convertToFileURL]];
-        NSData *data;
         if (url != nil) {            
             NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
                                                         cachePolicy:NSURLRequestReloadIgnoringCacheData
                                                     timeoutInterval:30];
             NSURLResponse *urlResponse;
             NSError *error;
-            data = [NSURLConnection sendSynchronousRequest:urlRequest
+            self.photoData = [NSURLConnection sendSynchronousRequest:urlRequest
                                                          returningResponse:&urlResponse
                                                                      error:&error];
         }
         else {
-            data = nil;
+            self.photoData = nil;
         }
         
         // update UI
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (data) {
-                UIImage *image = [[UIImage alloc] initWithData:data];
+            if (self.photoData != nil) {
+                UIImage *image = [[UIImage alloc] initWithData:self.photoData];
                 self.photoImageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
                 self.photoImageView.image = image;
             }
@@ -234,9 +326,7 @@
                 self.photoImageView.image = nil;
             }
             
-            //self.photoImageView.backgroundColor = [UIColor whiteColor];
-            //self.photoScrollView.backgroundColor = [UIColor greenColor];
-            
+                        
             self.photoScrollView.contentSize = self.photoImageView.frame.size;
             if (self.photoScrollView.frame.size.width < self.photoImageView.frame.size.width) {
                 self.photoScrollView.minimumZoomScale = self.photoScrollView.frame.size.width / self.photoImageView.frame.size.width;
@@ -245,14 +335,14 @@
                 self.photoScrollView.minimumZoomScale = 1.0f;
             }
             
-            //NSLog(@"min zoom => %f", self.photoScrollView.minimumZoomScale);
+            
             self.photoScrollView.maximumZoomScale = 5.0f;
             self.photoScrollView.zoomScale = self.photoScrollView.frame.size.width / self.photoImageView.frame.size.width;
+            photoScaleFitValue = self.photoScrollView.zoomScale;
             
             // centered photoImageView
             if (self.photoScrollView.zoomScale == 1.0f) {
                 self.photoImageView.frame = [self centeredFrameForScrollView:self.photoScrollView andUIView:self.photoImageView];
-                //NSLog(@" => centered photoimageView");
             }
             
             // stop indicator
@@ -265,6 +355,7 @@
             else {
                 [self.prevButton setEnabled:NO];
             }
+            
             // setup nextButton
             if (self.photoURL.isNextPage) {
                 [self.nextButton setEnabled:YES];
@@ -273,6 +364,8 @@
                 [self.nextButton setEnabled:NO];
             }
             
+            // setup actionButton
+            [self.actionButton setEnabled:YES];
         });
     });
 }

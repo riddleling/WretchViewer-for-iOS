@@ -16,6 +16,7 @@
 @property (readonly) BOOL isNextPage;
 @property (readonly, strong, nonatomic) NSString *prevPageURL;
 @property (readonly, strong, nonatomic) NSString *nextPageURL;
+@property (strong, nonatomic) NSString *fileName;
 
 
 - (id)initWithURL:(NSString *)photoURLString withThumbnailURL:(NSString *)thumbnailURLString;

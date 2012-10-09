@@ -21,6 +21,7 @@
 		25E3D19D15F3DE2B0078E5FD /* WretchViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E3D19B15F3DE2B0078E5FD /* WretchViewerViewController.xib */; };
 		25E3D1A915F478D40078E5FD /* RAWretchPhotoURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D1A815F478D40078E5FD /* RAWretchPhotoURL.m */; };
 		25E3D1B415F4E53B0078E5FD /* RAWretchAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D1B315F4E53A0078E5FD /* RAWretchAlbum.m */; };
+		25F85A06162307FE003B28E9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25F85A05162307FE003B28E9 /* MessageUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		25E3D1A815F478D40078E5FD /* RAWretchPhotoURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAWretchPhotoURL.m; sourceTree = "<group>"; };
 		25E3D1B215F4E53A0078E5FD /* RAWretchAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAWretchAlbum.h; sourceTree = "<group>"; };
 		25E3D1B315F4E53A0078E5FD /* RAWretchAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAWretchAlbum.m; sourceTree = "<group>"; };
+		25F85A05162307FE003B28E9 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25F85A06162307FE003B28E9 /* MessageUI.framework in Frameworks */,
 				25E3D18715F3DE2B0078E5FD /* UIKit.framework in Frameworks */,
 				25E3D18915F3DE2B0078E5FD /* Foundation.framework in Frameworks */,
 				25E3D18B15F3DE2B0078E5FD /* CoreGraphics.framework in Frameworks */,
@@ -68,6 +71,7 @@
 		25E3D17715F3DE2A0078E5FD = {
 			isa = PBXGroup;
 			children = (
+				25F85A05162307FE003B28E9 /* MessageUI.framework */,
 				25E3D18C15F3DE2B0078E5FD /* WretchViewer */,
 				25E3D18515F3DE2B0078E5FD /* Frameworks */,
 				25E3D18315F3DE2B0078E5FD /* Products */,
