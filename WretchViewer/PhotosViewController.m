@@ -131,20 +131,19 @@
     
 }
 
-/*
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     
-    self.album = nil;
     self.currentPhotosList = nil;
     self.prevButton = nil;
     self.nextButton = nil;
     self.indicator = nil;
     self.images = nil;
 }
- */
+
 
 - (void)viewWillDisappear:(BOOL)animated
 {

@@ -16,8 +16,10 @@
 - (CGRect)centeredFrameForScrollView:(UIScrollView *)scroll andUIView:(UIView *)rView;
 - (void)tap2;
 - (void)otherAction:(id)sender;
+- (void)openWeb;
 - (void)mailPhoto;
 - (void)savePhoto;
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo;
 @end
 
 
@@ -117,20 +119,20 @@
     [self photoDisplay];
 }
 
-/*
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     
-    self.photoURL = nil;
     self.indicator = nil;
     self.photoScrollView = nil;;
     self.photoImageView = nil;
     self.nextButton = nil;
     self.prevButton = nil;
     
-}*/
+}
+
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -170,9 +172,12 @@
 {    
     switch (buttonIndex) {
         case 0:
-            [self performSelector:@selector(mailPhoto)];
+            [self performSelector:@selector(openWeb)];
             break;
         case 1:
+            [self performSelector:@selector(mailPhoto)];
+            break;
+        case 2:
             [self performSelector:@selector(savePhoto)];
             break;
         default:
@@ -189,13 +194,7 @@
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
-{
-    //CGFloat imageWidth = self.photoImageView.frame.size.width;
-    //CGFloat imageHeight = self.photoImageView.frame.size.height;
-    //CGFloat scrollWidth = self.photoScrollView.frame.size.width;
-    //CGFloat scrollHeigh = self.photoScrollView.frame.size.height;
-    //NSLog(@"(%f, %f) (%f, %f)", imageWidth, imageHeight, scrollWidth, scrollHeigh);
-    
+{    
     self.photoImageView.frame = [self centeredFrameForScrollView:scrollView andUIView:self.photoImageView];
 }
 
@@ -236,19 +235,23 @@
 
 - (void)otherAction:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select a action"
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:@"Cancel"
                                                destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"Mail Photo", @"Svae Photo", nil];
+                                                    otherButtonTitles:@"Open to Safari", @"Mail Photo", @"Svae Photo", nil];
     [actionSheet showInView:self.view];
 }
 
 
-- (void)mailPhoto
+- (void)openWeb
 {
-    NSLog(@"mail photo...");
-    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.photoURL.urlValue]];
+}
+
+
+- (void)mailPhoto
+{    
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
         mailController.mailComposeDelegate = self;
@@ -266,7 +269,37 @@
 
 - (void)savePhoto
 {
-    NSLog(@"save photo...");
+    if (self.photoData != nil) {
+        UIImage *image = [[UIImage alloc] initWithData:self.photoData];
+        UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }
+    
+}
+
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    UILabel *saveLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height/2 , [[UIScreen mainScreen] bounds].size.width, 40)];
+    saveLabel.backgroundColor = [UIColor darkGrayColor];
+    saveLabel.textAlignment = NSTextAlignmentCenter;
+    saveLabel.textColor = [UIColor whiteColor];
+    
+    if(!error) {
+        //NSLog(@"Saved!");
+        saveLabel.text = @"Saved!";
+    }
+    else {
+        //NSLog(@"Error: %@",[error description]);
+        saveLabel.text = @"Save Failed!";
+    }
+    
+    [self.navigationController.view addSubview:saveLabel];
+    
+    [UIView animateWithDuration:2.0 animations:^{
+        saveLabel.alpha = 0;
+    } completion:^(BOOL finished) {
+        [saveLabel removeFromSuperview];
+    }];
 }
 
 

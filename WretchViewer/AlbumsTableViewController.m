@@ -99,17 +99,16 @@
     [self updateTable];
 }
 
-/*
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     
-    self.albums = nil;
     self.currentAlbumsList = nil;
     self.prevButton = nil;
     self.nextButton = nil;
     self.indicator = nil;
-}*/
+}
 
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -215,6 +214,7 @@
         // update UI
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
+            [self.tableView setContentOffset:CGPointZero animated:NO];
             
             // setup prevButton
             if (self.albums.currentPageNumber <= 1) {
