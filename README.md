@@ -1,6 +1,6 @@
 # WretchViewer for iOS
 
-尚未完成。
+一個可以觀看 Wretch 相簿的小程式
 
 ## License
 
