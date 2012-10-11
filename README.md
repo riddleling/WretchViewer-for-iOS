@@ -2,6 +2,14 @@
 
 一個可以觀看 Wretch 相簿的小程式
 
+[Demo 影片](http://youtu.be/2tcqPb-mk1k)
+
+
+## 系統需求
+
+iOS 5.0+
+
+
 ## License
 
 本專案程式碼採用 MIT License 釋出。
