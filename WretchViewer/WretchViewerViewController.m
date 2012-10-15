@@ -2,7 +2,7 @@
 //  WretchViewerViewController.m
 //  WretchViewer
 //
-//  Created by Wei-Chen Ling on 12/9/3.
+//  Created by Wei-Chen Ling on 2012/9/3.
 //
 
 
@@ -28,6 +28,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 }
+
 
 - (void)viewDidUnload
 {

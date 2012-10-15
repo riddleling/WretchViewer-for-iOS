@@ -2,7 +2,7 @@
 //  ShowPhotoViewController.h
 //  WretchViewer
 //
-//  Created by Wei-Chen Ling on 12/9/23.
+//  Created by Wei-Chen Ling on 2012/9/23.
 //
 
 
@@ -14,6 +14,7 @@
 <UIScrollViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 {
     float photoScaleFitValue;
+    BOOL isSmallSizePhoto;
 }
 @property (strong, nonatomic) RAWretchPhotoURL *photoURL;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
@@ -23,6 +24,7 @@
 @property (strong, nonatomic) UIBarButtonItem *prevButton;
 @property (strong, nonatomic) UIBarButtonItem *actionButton;
 @property (strong, nonatomic) NSData *photoData;
+@property (strong, nonatomic) UIActionSheet *actionSheet;
 
 
 - (id)initWithPhotoURL:(RAWretchPhotoURL *)aPhotoURL;

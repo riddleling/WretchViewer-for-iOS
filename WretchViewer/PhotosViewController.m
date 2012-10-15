@@ -2,7 +2,7 @@
 //  PhotosViewController.m
 //  WretchViewer
 //
-//  Created by Wei-Chen Ling on 12/9/13.
+//  Created by Wei-Chen Ling on 2012/9/13.
 //
 
 
@@ -102,13 +102,30 @@
     int y = 0;
     
     for (int tag=0; tag<=20; tag++) {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
+        UIImageView *imageView;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        }
+        else {
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
+        }
+        
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         // add imageView to images array
         [images addObject:imageView];
         
+        int offsetX, offsetY;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            offsetX = 50;
+            offsetY = 50;
+        }
+        else {
+            offsetX = 3;
+            offsetY = 10;
+        }
+        
         CGSize imageViewSize = imageView.frame.size;
-        UIControl *mask = [[UIControl alloc] initWithFrame:CGRectMake(3+x, 10+y, imageViewSize.width, imageViewSize.height)];
+        UIControl *mask = [[UIControl alloc] initWithFrame:CGRectMake(offsetX+x, offsetY+y, imageViewSize.width, imageViewSize.height)];
         [mask addSubview:imageView];
         
         [mask addTarget:self action:@selector(showPhoto:) forControlEvents:UIControlEventTouchUpInside];
@@ -116,13 +133,25 @@
         [self.view addSubview:mask];
         
         i++;
-        if (i < 5) {
-            x += 80;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            if (i < 5) {
+                x += 192;
+            }
+            if (i == 5) {
+                i = 1;
+                x = 0;
+                y += 180;
+            }
         }
-        if (i == 5) {
-            i = 1;
-            x = 0;
-            y += 80;
+        else {
+            if (i < 5) {
+                x += 80;
+            }
+            if (i == 5) {
+                i = 1;
+                x = 0;
+                y += 80;
+            }
         }
 
     }

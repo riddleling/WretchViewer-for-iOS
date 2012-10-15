@@ -2,7 +2,7 @@
 //  AlbumsTableViewController.h
 //  WretchViewer
 //
-//  Created by Wei-Chen Ling on 12/9/12.
+//  Created by Wei-Chen Ling on 2012/9/12.
 //
 
 

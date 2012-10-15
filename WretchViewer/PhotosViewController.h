@@ -2,7 +2,7 @@
 //  PhotosViewController.h
 //  WretchViewer
 //
-//  Created by Wei-Chen Ling on 12/9/13.
+//  Created by Wei-Chen Ling on 2012/9/13.
 //
 
 

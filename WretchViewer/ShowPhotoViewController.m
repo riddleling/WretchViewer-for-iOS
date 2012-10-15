@@ -2,7 +2,7 @@
 //  ShowPhotoViewController.m
 //  WretchViewer
 //
-//  Created by Wei-Chen Ling on 12/9/23.
+//  Created by Wei-Chen Ling on 2012/9/23.
 //
 
 
@@ -34,6 +34,7 @@
 @synthesize prevButton;
 @synthesize actionButton;
 @synthesize photoData;
+@synthesize actionSheet;
 
 
 - (id)initWithPhotoURL:(RAWretchPhotoURL *)aPhotoURL
@@ -42,6 +43,8 @@
     if (self != nil)
     {
         self.photoURL = aPhotoURL;
+        photoScaleFitValue = 0;
+        isSmallSizePhoto = NO;
     }
     return self;
 }
@@ -112,6 +115,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //self.view.backgroundColor = [UIColor whiteColor];
+    
     [self.prevButton setEnabled:NO];
     [self.nextButton setEnabled:NO];
     [self.actionButton setEnabled:NO];
@@ -125,11 +130,15 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     
+    self.photoURL = nil;
     self.indicator = nil;
     self.photoScrollView = nil;;
     self.photoImageView = nil;
     self.nextButton = nil;
     self.prevButton = nil;
+    self.actionButton = nil;
+    self.actionSheet = nil;
+    self.photoData = nil;
     
 }
 
@@ -155,12 +164,21 @@
 
 - (void)tap2
 {
-    //NSLog(@"tap 2!");
-    if (self.photoScrollView.zoomScale == photoScaleFitValue){
-        [self.photoScrollView setZoomScale:1.0f animated:YES];
+    if (isSmallSizePhoto) {
+        if (self.photoScrollView.zoomScale == 1.0f){
+            [self.photoScrollView setZoomScale:photoScaleFitValue animated:YES];
+        }
+        else {
+            [self.photoScrollView setZoomScale:1.0f animated:YES];
+        }
     }
     else {
-        [self.photoScrollView setZoomScale:photoScaleFitValue animated:YES];
+        if (self.photoScrollView.zoomScale == photoScaleFitValue) {
+            [self.photoScrollView setZoomScale:1.0f animated:YES];
+        }
+        else {
+            [self.photoScrollView setZoomScale:photoScaleFitValue animated:YES];
+        }
     }
     
 }
@@ -183,6 +201,11 @@
         default:
             break;
     }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    self.actionSheet = nil;
 }
 
 
@@ -235,12 +258,25 @@
 
 - (void)otherAction:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"Open to Safari", @"Mail Photo", @"Svae Photo", nil];
-    [actionSheet showInView:self.view];
+    
+    if (self.actionSheet) {
+        [self.actionSheet dismissWithClickedButtonIndex:-1 animated:YES];
+        self.actionSheet = nil;
+        return;
+    }
+    
+    self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                              delegate:self
+                                     cancelButtonTitle:@"Cancel"
+                                destructiveButtonTitle:nil
+                                     otherButtonTitles:@"Open in Safari", @"Mail Photo", @"Svae Photo", nil];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.actionSheet showFromBarButtonItem:sender animated:YES];
+    }
+    else {
+        [self.actionSheet showInView:self.view];
+    }
 }
 
 
@@ -260,7 +296,7 @@
         [mailController setMessageBody:mailContent isHTML:NO];
         [mailController setSubject:@"WretchViewer App sent a photo to you"];
         if (self.photoData != nil) {
-            [mailController addAttachmentData:self.photoData mimeType:@"image/jpeg" fileName:self.photoURL.fileName];
+            [mailController addAttachmentData:[self.photoData copy] mimeType:@"image/jpeg" fileName:self.photoURL.fileName];
         }
         
         [self presentModalViewController:mailController animated:YES];
@@ -270,7 +306,7 @@
 - (void)savePhoto
 {
     if (self.photoData != nil) {
-        UIImage *image = [[UIImage alloc] initWithData:self.photoData];
+        UIImage *image = [[UIImage alloc] initWithData:[self.photoData copy]];
         UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
     }
     
@@ -289,7 +325,7 @@
         saveLabel.text = @"Saved!";
     }
     else {
-        //NSLog(@"Error: %@",[error description]);
+        NSLog(@"Error: %@",[error description]);
         saveLabel.text = @"Save Failed!";
     }
     
@@ -359,19 +395,41 @@
                 self.photoImageView.image = nil;
             }
             
-                        
             self.photoScrollView.contentSize = self.photoImageView.frame.size;
-            if (self.photoScrollView.frame.size.width < self.photoImageView.frame.size.width) {
-                self.photoScrollView.minimumZoomScale = self.photoScrollView.frame.size.width / self.photoImageView.frame.size.width;
+            
+            // setup maximumZoomScale
+            self.photoScrollView.maximumZoomScale = 5.0f;
+            
+            
+            // setup current zoom scale and minimumZoomScale
+            if (self.photoImageView.frame.size.width >= self.photoImageView.frame.size.height) {
+                photoScaleFitValue = self.photoScrollView.frame.size.width / self.photoImageView.frame.size.width;
+                
+                if (self.photoScrollView.frame.size.width < self.photoImageView.frame.size.width) {
+                    self.photoScrollView.minimumZoomScale = photoScaleFitValue;
+                    isSmallSizePhoto = NO;
+                }
+                else {
+                    self.photoScrollView.minimumZoomScale = 1.0f;
+                    isSmallSizePhoto = YES;
+                }
+                
+                self.photoScrollView.zoomScale = self.photoScrollView.minimumZoomScale;
             }
             else {
-                self.photoScrollView.minimumZoomScale = 1.0f;
+                photoScaleFitValue = self.photoScrollView.frame.size.height / self.photoImageView.frame.size.height;
+                
+                if (self.photoScrollView.frame.size.height < self.photoImageView.frame.size.height) {
+                    self.photoScrollView.minimumZoomScale = photoScaleFitValue;
+                    isSmallSizePhoto = NO;
+                }
+                else {
+                    self.photoScrollView.minimumZoomScale = 1.0f;
+                    isSmallSizePhoto = YES;
+                }
+                
+                self.photoScrollView.zoomScale = self.photoScrollView.minimumZoomScale;
             }
-            
-            
-            self.photoScrollView.maximumZoomScale = 5.0f;
-            self.photoScrollView.zoomScale = self.photoScrollView.frame.size.width / self.photoImageView.frame.size.width;
-            photoScaleFitValue = self.photoScrollView.zoomScale;
             
             // centered photoImageView
             if (self.photoScrollView.zoomScale == 1.0f) {
