@@ -35,6 +35,7 @@
     {
         self.album = aAlbum;
         self.images = [[NSMutableArray alloc] init];
+        [album addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
     }
     return self;
 }
@@ -91,9 +92,7 @@
     [super viewDidLoad];
     
     //self.view.backgroundColor = [UIColor whiteColor];
-    
-    [album addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
-    
+
     [self.prevButton setEnabled:NO];
     [self.nextButton setEnabled:NO];
     
@@ -170,7 +169,7 @@
     self.prevButton = nil;
     self.nextButton = nil;
     self.indicator = nil;
-    self.images = nil;
+    [self.images removeAllObjects];
 }
 
 

@@ -34,6 +34,7 @@
     self = [super initWithStyle:style];
     if (self) {
         self.albums = albumsListObj;
+        [albums addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
     }
     return self;
 }
@@ -42,7 +43,7 @@
 - (void)loadView
 {
     [super loadView];
-    
+
     // setup Back BarButtonItem
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToMainView:)];
     self.navigationItem.leftBarButtonItem = backButton;
@@ -90,8 +91,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [albums addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
     
     [self.prevButton setEnabled:NO];
     [self.nextButton setEnabled:NO];
