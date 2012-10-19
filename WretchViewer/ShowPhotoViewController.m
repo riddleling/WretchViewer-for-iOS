@@ -69,10 +69,14 @@
     
     NSMutableArray *tbitems = [[NSMutableArray alloc] init];
     
+    UIBarButtonItem *spaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spaceButton.width = 13.0f;
     // add BarButtonItems
     [tbitems addObject:self.actionButton];
+    [tbitems addObject:spaceButton];
     [tbitems addObject:self.nextButton];
     [tbitems addObject:self.prevButton];
+    
     self.navigationItem.rightBarButtonItems = tbitems;
     
     // get screen size
