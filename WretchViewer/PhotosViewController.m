@@ -15,6 +15,7 @@
 - (void)prevPage:(id)sender;
 - (void)nextPage:(id)sender;
 - (void)showPhoto:(id)sender;
+- (UIImage *)imageWithUIImage:(UIImage *)aImage withBorderWidth:(CGFloat)border;
 @end
 
 
@@ -44,6 +45,13 @@
 - (void)loadView
 {
     [super loadView];
+    
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIImage *backgroundTexture = [UIImage imageNamed:@"retina_wood.png"];
+        UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundTexture];
+        [self.view setBackgroundColor:backgroundColor];
+    }
     
     // setup BarButtonItem
     self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@"▼"
@@ -90,8 +98,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //self.view.backgroundColor = [UIColor whiteColor];
 
     [self.prevButton setEnabled:NO];
     [self.nextButton setEnabled:NO];
@@ -149,7 +155,7 @@
             if (i == 5) {
                 i = 1;
                 x = 0;
-                y += 80;
+                y += 81;
             }
         }
 
@@ -229,7 +235,6 @@
         int tag = 0;
         for (RAWretchPhotoURL *photo in self.currentPhotosList) {
             NSURL *url = [NSURL URLWithString:photo.thumbnailURL];
-            //NSData *data = [[NSData alloc] initWithContentsOfURL:url];
             
             NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
                                                         cachePolicy:NSURLRequestReloadIgnoringCacheData
@@ -241,7 +246,16 @@
                                                      error:&error];
             // update thumbnail image
             dispatch_async(dispatch_get_main_queue(), ^{
-                UIImage *image = [[UIImage alloc] initWithData:data];
+                UIImage *originalImage = [[UIImage alloc] initWithData:data];
+                UIImage *image;
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+                    UIImage *tmpImage = [self imageWithUIImage:originalImage withBorderWidth:5.0f];
+                    image = [self imageWithShadow:tmpImage];
+                }
+                else {
+                    image = [self imageWithUIImage:originalImage withBorderWidth:1.5f];
+                }
+                
                 UIImageView *imageView = [images objectAtIndex:tag];
                 [imageView setImage:image];
             });
@@ -305,6 +319,44 @@
     }
     
 }
+
+
+- (UIImage *)imageWithUIImage:(UIImage *)aImage withBorderWidth:(CGFloat)border
+{
+    CGSize size = CGSizeMake(aImage.size.width+border*2, aImage.size.height+border*2);
+    UIGraphicsBeginImageContext(size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    CGContextFillRect(context, rect);
+    
+    CGRect imageRect = CGRectMake(border, border, aImage.size.width, aImage.size.height);
+    [aImage drawInRect:imageRect];
+    
+    
+    UIImage *tmpImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return tmpImage;
+}
+
+
+- (UIImage *)imageWithShadow:(UIImage *)aImage
+{
+    CGSize size = CGSizeMake(aImage.size.width+6, aImage.size.height+6);
+    UIGraphicsBeginImageContext(size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetShadow(context, CGSizeMake(3, 3), 2);
+    CGRect rect = CGRectMake(0, 0, aImage.size.width, aImage.size.height);
+    [aImage drawInRect:rect];
+    
+    UIImage *tmpImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return tmpImage;
+}
+
 
 
 @end
