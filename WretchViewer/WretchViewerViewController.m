@@ -27,6 +27,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    UIImage *backgroundTexture = [UIImage imageNamed:@"retina_wood.png"];
+    UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundTexture];
+    [self.view setBackgroundColor:backgroundColor];
+    
 }
 
 
