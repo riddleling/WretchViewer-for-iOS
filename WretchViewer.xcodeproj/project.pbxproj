@@ -23,6 +23,12 @@
 		25E3D1B415F4E53B0078E5FD /* RAWretchAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E3D1B315F4E53A0078E5FD /* RAWretchAlbum.m */; };
 		25F0D8A1163123C100798F9E /* retina_wood.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0D89F163123C100798F9E /* retina_wood.png */; };
 		25F0D8A2163123C100798F9E /* retina_wood@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0D8A0163123C100798F9E /* retina_wood@2X.png */; };
+		25F0D8AA163308F500798F9E /* purty_wood.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0D8A8163308F500798F9E /* purty_wood.png */; };
+		25F0D8AB163308F500798F9E /* purty_wood@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0D8A9163308F500798F9E /* purty_wood@2X.png */; };
+		25F0D8AE1633091900798F9E /* wood_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0D8AC1633091900798F9E /* wood_1.png */; };
+		25F0D8AF1633091900798F9E /* wood_1@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0D8AD1633091900798F9E /* wood_1@2X.png */; };
+		25F0D8B21633092600798F9E /* wood_pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0D8B01633092600798F9E /* wood_pattern.png */; };
+		25F0D8B31633092600798F9E /* wood_pattern@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0D8B11633092600798F9E /* wood_pattern@2X.png */; };
 		25F85A06162307FE003B28E9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25F85A05162307FE003B28E9 /* MessageUI.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +60,12 @@
 		25E3D1B315F4E53A0078E5FD /* RAWretchAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAWretchAlbum.m; sourceTree = "<group>"; };
 		25F0D89F163123C100798F9E /* retina_wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retina_wood.png; sourceTree = "<group>"; };
 		25F0D8A0163123C100798F9E /* retina_wood@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retina_wood@2X.png"; sourceTree = "<group>"; };
+		25F0D8A8163308F500798F9E /* purty_wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purty_wood.png; sourceTree = "<group>"; };
+		25F0D8A9163308F500798F9E /* purty_wood@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "purty_wood@2X.png"; sourceTree = "<group>"; };
+		25F0D8AC1633091900798F9E /* wood_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wood_1.png; sourceTree = "<group>"; };
+		25F0D8AD1633091900798F9E /* wood_1@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood_1@2X.png"; sourceTree = "<group>"; };
+		25F0D8B01633092600798F9E /* wood_pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wood_pattern.png; sourceTree = "<group>"; };
+		25F0D8B11633092600798F9E /* wood_pattern@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood_pattern@2X.png"; sourceTree = "<group>"; };
 		25F85A05162307FE003B28E9 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -105,6 +117,12 @@
 			children = (
 				25F0D89F163123C100798F9E /* retina_wood.png */,
 				25F0D8A0163123C100798F9E /* retina_wood@2X.png */,
+				25F0D8B01633092600798F9E /* wood_pattern.png */,
+				25F0D8B11633092600798F9E /* wood_pattern@2X.png */,
+				25F0D8AC1633091900798F9E /* wood_1.png */,
+				25F0D8AD1633091900798F9E /* wood_1@2X.png */,
+				25F0D8A8163308F500798F9E /* purty_wood.png */,
+				25F0D8A9163308F500798F9E /* purty_wood@2X.png */,
 				25E3D19515F3DE2B0078E5FD /* WretchViewerAppDelegate.h */,
 				25E3D19615F3DE2B0078E5FD /* WretchViewerAppDelegate.m */,
 				25E3D1A715F478D40078E5FD /* RAWretchPhotoURL.h */,
@@ -193,6 +211,12 @@
 				25E3D19D15F3DE2B0078E5FD /* WretchViewerViewController.xib in Resources */,
 				25F0D8A1163123C100798F9E /* retina_wood.png in Resources */,
 				25F0D8A2163123C100798F9E /* retina_wood@2X.png in Resources */,
+				25F0D8AA163308F500798F9E /* purty_wood.png in Resources */,
+				25F0D8AB163308F500798F9E /* purty_wood@2X.png in Resources */,
+				25F0D8AE1633091900798F9E /* wood_1.png in Resources */,
+				25F0D8AF1633091900798F9E /* wood_1@2X.png in Resources */,
+				25F0D8B21633092600798F9E /* wood_pattern.png in Resources */,
+				25F0D8B31633092600798F9E /* wood_pattern@2X.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

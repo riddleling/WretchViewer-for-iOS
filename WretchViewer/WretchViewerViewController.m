@@ -28,7 +28,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    UIImage *backgroundTexture = [UIImage imageNamed:@"retina_wood.png"];
+    UIImage *backgroundTexture = [UIImage imageNamed:@"wood_pattern.png"];
     UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundTexture];
     [self.view setBackgroundColor:backgroundColor];
     
@@ -63,7 +63,8 @@
     
     AlbumsTableViewController *masterViewController = [[AlbumsTableViewController alloc] initWithStyle:UITableViewStylePlain albums:albums];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
-    navController.navigationBar.tintColor = [UIColor grayColor];
+    
+    [navController.navigationBar setTintColor:[UIColor grayColor]];
     
     [self presentViewController:navController animated:NO completion:nil];
     

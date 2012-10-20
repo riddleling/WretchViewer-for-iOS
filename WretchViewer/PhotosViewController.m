@@ -16,6 +16,7 @@
 - (void)nextPage:(id)sender;
 - (void)showPhoto:(id)sender;
 - (UIImage *)imageWithUIImage:(UIImage *)aImage withBorderWidth:(CGFloat)border;
+- (UIImage *)imageWithShadow:(UIImage *)aImage;
 @end
 
 
@@ -47,11 +48,9 @@
     [super loadView];
     
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        UIImage *backgroundTexture = [UIImage imageNamed:@"retina_wood.png"];
-        UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundTexture];
-        [self.view setBackgroundColor:backgroundColor];
-    }
+    UIImage *backgroundTexture = [UIImage imageNamed:@"wood_pattern.png"];
+    UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundTexture];
+    [self.view setBackgroundColor:backgroundColor];
     
     // setup BarButtonItem
     self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@"▼"
@@ -247,14 +246,8 @@
             // update thumbnail image
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIImage *originalImage = [[UIImage alloc] initWithData:data];
-                UIImage *image;
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-                    UIImage *tmpImage = [self imageWithUIImage:originalImage withBorderWidth:5.0f];
-                    image = [self imageWithShadow:tmpImage];
-                }
-                else {
-                    image = [self imageWithUIImage:originalImage withBorderWidth:1.5f];
-                }
+                UIImage *tmpImage = [self imageWithUIImage:originalImage withBorderWidth:5.0f];
+                UIImage *image = [self imageWithShadow:tmpImage];
                 
                 UIImageView *imageView = [images objectAtIndex:tag];
                 [imageView setImage:image];
@@ -344,7 +337,7 @@
 
 - (UIImage *)imageWithShadow:(UIImage *)aImage
 {
-    CGSize size = CGSizeMake(aImage.size.width+6, aImage.size.height+6);
+    CGSize size = CGSizeMake(aImage.size.width+5, aImage.size.height+5);
     UIGraphicsBeginImageContext(size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -356,7 +349,6 @@
     UIGraphicsEndImageContext();
     return tmpImage;
 }
-
 
 
 @end
