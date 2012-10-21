@@ -48,7 +48,7 @@
     [super loadView];
     
     
-    UIImage *backgroundTexture = [UIImage imageNamed:@"wood_pattern.png"];
+    UIImage *backgroundTexture = [UIImage imageNamed:@"purty_wood.png"];
     UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundTexture];
     [self.view setBackgroundColor:backgroundColor];
     
@@ -84,7 +84,7 @@
     [self.indicator setHidesWhenStopped:YES];
     [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
     [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
-    [self.indicator setAlpha:0.9f];
+    [self.indicator setAlpha:0.7f];
 
     [self.navigationController.view addSubview:self.indicator];
     
@@ -108,7 +108,7 @@
     for (int tag=0; tag<=20; tag++) {
         UIImageView *imageView;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 105, 105)];
         }
         else {
             imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
@@ -121,7 +121,7 @@
         int offsetX, offsetY;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             offsetX = 50;
-            offsetY = 50;
+            offsetY = 60;
         }
         else {
             offsetX = 3;
@@ -144,7 +144,7 @@
             if (i == 5) {
                 i = 1;
                 x = 0;
-                y += 180;
+                y += 172;
             }
         }
         else {
