@@ -110,7 +110,17 @@
     doubleTap.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer:doubleTap];
     
-
+    
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextPage:)];
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    swipeLeft.numberOfTouchesRequired = 2;
+    [self.view addGestureRecognizer:swipeLeft];
+    
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(prevPage:)];
+    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+    swipeRight.numberOfTouchesRequired = 2;
+    [self.view addGestureRecognizer:swipeRight];
+    
 }
 
 
@@ -164,7 +174,7 @@
 }
 
 
-#pragma mark - Tap gesture Methods
+#pragma mark - Gesture Methods
 
 - (void)tap2
 {
@@ -345,21 +355,27 @@
 
 - (void)prevPage:(id)sender
 {
-    [self.prevButton setEnabled:NO];
-    [self.nextButton setEnabled:NO];
-    RAWretchPhotoURL *prevPhotoURL = [[RAWretchPhotoURL alloc] initWithURL:self.photoURL.prevPageURL withThumbnailURL:nil];
-    self.photoURL = prevPhotoURL;
-    [self photoDisplay];
+    NSLog(@"prev page");
+    if (self.prevButton.enabled) {
+        [self.prevButton setEnabled:NO];
+        [self.nextButton setEnabled:NO];
+        RAWretchPhotoURL *prevPhotoURL = [[RAWretchPhotoURL alloc] initWithURL:self.photoURL.prevPageURL withThumbnailURL:nil];
+        self.photoURL = prevPhotoURL;
+        [self photoDisplay];
+    }
 }
 
 
 - (void)nextPage:(id)sender
 {
-    [self.prevButton setEnabled:NO];
-    [self.nextButton setEnabled:NO];
-    RAWretchPhotoURL *nextPhotoURL = [[RAWretchPhotoURL alloc] initWithURL:self.photoURL.nextPageURL withThumbnailURL:nil];
-    self.photoURL = nextPhotoURL;
-    [self photoDisplay];
+    NSLog(@"next page");
+    if (self.nextButton.enabled) {
+        [self.prevButton setEnabled:NO];
+        [self.nextButton setEnabled:NO];
+        RAWretchPhotoURL *nextPhotoURL = [[RAWretchPhotoURL alloc] initWithURL:self.photoURL.nextPageURL withThumbnailURL:nil];
+        self.photoURL = nextPhotoURL;
+        [self photoDisplay];
+    }
 }
 
 
