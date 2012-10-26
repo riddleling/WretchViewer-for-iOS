@@ -10,6 +10,10 @@
 #import <MessageUI/MessageUI.h>
 #import "RAWretchPhotoURL.h"
 
+
+@protocol ShowPhotoViewControllerDelegate;
+
+
 @interface ShowPhotoViewController : UIViewController
 <UIScrollViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 {
@@ -25,8 +29,14 @@
 @property (strong, nonatomic) UIBarButtonItem *actionButton;
 @property (strong, nonatomic) NSData *photoData;
 @property (strong, nonatomic) UIActionSheet *actionSheet;
-
+@property (weak, nonatomic) id<ShowPhotoViewControllerDelegate> delegate;
 
 - (id)initWithPhotoURL:(RAWretchPhotoURL *)aPhotoURL;
+@end
+
+
+@protocol ShowPhotoViewControllerDelegate <NSObject>
+@optional
+- (void)showPhotoViewDidDisappear;
 
 @end

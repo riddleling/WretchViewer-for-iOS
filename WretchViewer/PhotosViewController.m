@@ -8,7 +8,7 @@
 
 #import "PhotosViewController.h"
 #import "RAWretchPhotoURL.h"
-#import "ShowPhotoViewController.h"
+
 
 @interface PhotosViewController (PrivateMethods)
 - (void)updateImages;
@@ -17,6 +17,7 @@
 - (void)showPhoto:(id)sender;
 - (UIImage *)imageWithUIImage:(UIImage *)aImage withBorderWidth:(CGFloat)border;
 - (UIImage *)imageWithShadow:(UIImage *)aImage;
+- (CGRect)frameSizeForImage:(UIImage *)image inImageView:(UIImageView *)imageView;
 @end
 
 
@@ -28,6 +29,8 @@
 @synthesize nextButton;
 @synthesize indicator;
 @synthesize images;
+@synthesize transitionImages;
+@synthesize transitionView;
 
 
 - (id)initWithAlbum:(RAWretchAlbum *)aAlbum
@@ -37,6 +40,7 @@
     {
         self.album = aAlbum;
         self.images = [[NSMutableArray alloc] init];
+        self.transitionImages = [[NSMutableArray alloc] init];
         [album addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
     }
     return self;
@@ -107,16 +111,27 @@
     
     for (int tag=0; tag<=20; tag++) {
         UIImageView *imageView;
+        UIImageView *transitionImageView;
+        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 105, 105)];
+            transitionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 105, 105)];
         }
         else {
             imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
+            transitionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
         }
         
         imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        // setup transitionImageView
+        transitionImageView.contentMode = UIViewContentModeScaleAspectFit;
+        transitionImageView.autoresizesSubviews = YES;
+        transitionImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |UIViewAutoresizingFlexibleTopMargin;
+        
         // add imageView to images array
         [images addObject:imageView];
+        [transitionImages addObject:transitionImageView];
         
         int offsetX, offsetY;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -175,6 +190,8 @@
     self.nextButton = nil;
     self.indicator = nil;
     [self.images removeAllObjects];
+    [self.transitionImages removeAllObjects];
+    self.transitionView = nil;
 }
 
 
@@ -215,6 +232,21 @@
 }
 
 
+#pragma mark - ShowPhotoViewControllerDelegate Methods
+
+- (void)showPhotoViewDidDisappear
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.transitionView.frame = thumbnailRect;
+    } completion:^(BOOL finished) {
+        [self.transitionView removeFromSuperview];
+        for (UIImageView *imgView in images) {
+            imgView.alpha = 1.0f;
+        }
+    }];
+}
+
+
 #pragma mark - Private Methods
 
 - (void)updateImages
@@ -224,6 +256,9 @@
     for (int i=0; i<=20; i++) {
         UIImageView *imageView = [images objectAtIndex:i];
         [imageView setImage:nil];
+        
+        UIImageView *transitionImageView = [transitionImages objectAtIndex:i];
+        [transitionImageView setImage:nil];
     }
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -251,6 +286,9 @@
                 
                 UIImageView *imageView = [images objectAtIndex:tag];
                 [imageView setImage:image];
+                
+                UIImageView *transitionImageView = [transitionImages objectAtIndex:tag];
+                [transitionImageView setImage:image];
             });
             tag++;
         }
@@ -302,15 +340,38 @@
 - (void)showPhoto:(id)sender
 {
     int tag = [sender tag];
-    //NSLog(@"tag: %d", tag);
     
     if (tag < [currentPhotosList count]) {
         RAWretchPhotoURL *photoURL = [currentPhotosList objectAtIndex:tag];
         ShowPhotoViewController *controller = [[ShowPhotoViewController alloc] initWithPhotoURL:photoURL];
-    
-        [self.navigationController pushViewController:controller animated:YES];
+        [controller setDelegate:self];
+        
+        UIImageView *transitionImageView = [transitionImages objectAtIndex:tag];
+        CGRect senderRect = [sender frame];
+        CGRect rect = [self frameSizeForImage:transitionImageView.image inImageView:transitionImageView];
+        thumbnailRect = CGRectMake(senderRect.origin.x + rect.origin.x, senderRect.origin.y + rect.origin.y,rect.size.width , rect.size.height);
+        
+        transitionImageView.frame = CGRectMake(0, 0, rect.size.width, rect.size.height);
+        self.transitionView = [[UIView alloc] initWithFrame:thumbnailRect];
+        //self.transitionView.backgroundColor = [UIColor lightGrayColor];
+        
+        [self.transitionView addSubview:transitionImageView];
+        [self.view addSubview:transitionView];
+        
+        // hide images
+        for (UIImageView *imgView in images) {
+            imgView.alpha = 0.0f;
+        }
+
+        [UIView animateWithDuration:0.3 animations:^{
+            self.transitionView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64);
+        } completion:^(BOOL finished) {
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+            [navController.navigationBar setTintColor:[UIColor grayColor]];
+            navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:navController animated:YES completion:nil];
+        }];
     }
-    
 }
 
 
@@ -348,6 +409,25 @@
     UIImage *tmpImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return tmpImage;
+}
+
+
+- (CGRect)frameSizeForImage:(UIImage *)image inImageView:(UIImageView *)imageView
+{
+    float hfactor = image.size.width / imageView.frame.size.width;
+    float vfactor = image.size.height / imageView.frame.size.height;
+    
+    float factor = fmax(hfactor, vfactor);
+    
+    // Divide the size by the greater of the vertical or horizontal shrinkage factor
+    float newWidth = image.size.width / factor;
+    float newHeight = image.size.height / factor;
+    
+    // Then figure out if you need to offset it to center vertically or horizontally
+    float leftOffset = (imageView.frame.size.width - newWidth) / 2;
+    float topOffset = (imageView.frame.size.height - newHeight) / 2;
+    
+    return CGRectMake(leftOffset, topOffset, newWidth, newHeight);
 }
 
 

@@ -20,8 +20,8 @@
 - (void)mailPhoto;
 - (void)savePhoto;
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo;
+- (void)closeViewController:(id)sender;
 @end
-
 
 
 @implementation ShowPhotoViewController
@@ -55,6 +55,12 @@
     [super loadView];
     
     // setup BarButtonItem
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Close"
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(closeViewController:)];
+    self.navigationItem.leftBarButtonItem = backButton;
+    // setup Right BarButtonItem
     self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@"▼"
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
@@ -81,6 +87,7 @@
     
     // get screen size
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+    
     // setup imageView and scrollView
     CGRect viewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height-20-44);
     self.photoImageView = [[UIImageView alloc] initWithFrame:viewFrame];
@@ -94,15 +101,10 @@
     [self.view addSubview:photoScrollView];
     
     // setup indicator
-    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, screenSize.width, 30)];
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, screenSize.height/2, screenSize.width, 45)];
     [self.indicator setHidesWhenStopped:YES];
-    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-    [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
-    [self.indicator setAlpha:0.8f];
+    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.navigationController.view addSubview:self.indicator];
-    
-    //setup title
-    //self.title = @"Photo";
     
     
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap2)];
@@ -166,6 +168,13 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(showPhotoViewDidDisappear)]) {
+        [self.delegate showPhotoViewDidDisappear];
+    }
+}
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -194,7 +203,6 @@
             [self.photoScrollView setZoomScale:photoScaleFitValue animated:YES];
         }
     }
-    
 }
 
 
@@ -267,6 +275,12 @@
     }
     
     return frameToCenter;
+}
+
+
+- (void)closeViewController:(id)sender
+{
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 
@@ -355,7 +369,6 @@
 
 - (void)prevPage:(id)sender
 {
-    NSLog(@"prev page");
     if (self.prevButton.enabled) {
         [self.prevButton setEnabled:NO];
         [self.nextButton setEnabled:NO];
@@ -368,7 +381,6 @@
 
 - (void)nextPage:(id)sender
 {
-    NSLog(@"next page");
     if (self.nextButton.enabled) {
         [self.prevButton setEnabled:NO];
         [self.nextButton setEnabled:NO];
@@ -434,7 +446,7 @@
                     isSmallSizePhoto = YES;
                 }
                 
-                self.photoScrollView.zoomScale = self.photoScrollView.minimumZoomScale;
+                self.photoScrollView.zoomScale = photoScaleFitValue;
             }
             else {
                 photoScaleFitValue = self.photoScrollView.frame.size.height / self.photoImageView.frame.size.height;
@@ -448,7 +460,7 @@
                     isSmallSizePhoto = YES;
                 }
                 
-                self.photoScrollView.zoomScale = self.photoScrollView.minimumZoomScale;
+                self.photoScrollView.zoomScale = photoScaleFitValue;
             }
             
             // centered photoImageView

@@ -45,8 +45,8 @@
     [super loadView];
 
     // setup Back BarButtonItem
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToMainView:)];
-    self.navigationItem.leftBarButtonItem = backButton;
+    //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backToMainView:)];
+    //self.navigationItem.leftBarButtonItem = backButton;
     
     
     // setup switch BarButtonItem
@@ -85,6 +85,9 @@
     
     // setup title
     self.title = [albums wretchID];
+    
+    // setup navigation bar hidden
+    self.navigationController.navigationBarHidden = NO;
 }
 
 

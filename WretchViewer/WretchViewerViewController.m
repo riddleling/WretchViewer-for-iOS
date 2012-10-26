@@ -32,6 +32,9 @@
     UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundTexture];
     [self.view setBackgroundColor:backgroundColor];
     
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
 }
 
 
@@ -44,6 +47,13 @@
     self.goButton = nil;
     
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -61,13 +71,8 @@
     NSString *wretchID = textField.text;
     RAWretchAlbumList *albums = [[RAWretchAlbumList alloc] initWithWretchID:wretchID];
     
-    AlbumsTableViewController *masterViewController = [[AlbumsTableViewController alloc] initWithStyle:UITableViewStylePlain albums:albums];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
-    
-    [navController.navigationBar setTintColor:[UIColor grayColor]];
-    
-    [self presentViewController:navController animated:NO completion:nil];
-    
+    AlbumsTableViewController *masterViewController = [[AlbumsTableViewController alloc] initWithStyle:UITableViewStylePlain albums:albums];    
+    [self.navigationController pushViewController:masterViewController animated:YES];
 }
 
 
