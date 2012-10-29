@@ -43,6 +43,11 @@
 - (void)loadView
 {
     [super loadView];
+    
+    // setup tableView backgroundColor
+    UIImage *backgroundTexture = [UIImage imageNamed:@"wood_pattern.png"];
+    UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundTexture];
+    [self.tableView setBackgroundColor:backgroundColor];
 
     // setup switch BarButtonItem
     self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@"▼"
@@ -82,6 +87,9 @@
     
     // setup navigation bar hidden
     self.navigationController.navigationBarHidden = NO;
+    
+    // setup tableFooterView
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 
@@ -202,13 +210,18 @@
     return 70;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor whiteColor];
+}
+
 
 #pragma mark - Private Methods
 
 - (void)updateTable
 {
     // setup indicator
-    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2-26, [UIScreen mainScreen].bounds.size.height/2, 52, 52)];
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2-26, [UIScreen mainScreen].bounds.size.height/2-26, 52, 52)];
     [self.indicator setHidesWhenStopped:YES];
     [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
