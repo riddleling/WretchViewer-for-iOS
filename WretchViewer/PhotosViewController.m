@@ -83,15 +83,6 @@
     self.navigationItem.rightBarButtonItems = tbitems;
     
     
-    // setup indicator
-    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, 30)];
-    [self.indicator setHidesWhenStopped:YES];
-    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-    [self.indicator setBackgroundColor:[UIColor darkGrayColor]];
-    [self.indicator setAlpha:0.7f];
-
-    [self.navigationController.view addSubview:self.indicator];
-    
     // setup title
     self.title = self.album.name;
     
@@ -199,8 +190,12 @@
 {
     [super viewWillDisappear:animated];
     
-    if ([self.indicator isAnimating]) {
-        [self.indicator stopAnimating];
+    if (self.indicator != nil) {
+        if ([self.indicator isAnimating]) {
+            [self.indicator stopAnimating];
+        }
+        [self.indicator removeFromSuperview];
+        self.indicator = nil;
     }
 }
 
@@ -251,7 +246,17 @@
 
 - (void)updateImages
 {
+    // setup indicator
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2-25, [UIScreen mainScreen].bounds.size.height/2, 50, 50)];
+    [self.indicator setHidesWhenStopped:YES];
+    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.indicator.layer setShadowColor:[UIColor darkGrayColor].CGColor];
+    [self.indicator.layer setShadowOffset:CGSizeMake(4, 4)];
+    [self.indicator.layer setShadowOpacity:1.0f];
+    
+    [self.navigationController.view addSubview:self.indicator];
     [self.indicator startAnimating];
+    
     
     for (int i=0; i<=20; i++) {
         UIImageView *imageView = [images objectAtIndex:i];
@@ -310,8 +315,13 @@
             else {
                 [self.nextButton setEnabled:NO];
             }
+            
             // stop indicator
-            [self.indicator stopAnimating];
+            if (self.indicator != nil) {
+                [self.indicator stopAnimating];
+                [self.indicator removeFromSuperview];
+                self.indicator = nil;
+            }
         });
     });
 }

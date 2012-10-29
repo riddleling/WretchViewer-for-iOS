@@ -91,8 +91,6 @@
     // setup imageView and scrollView
     CGRect viewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height-20-44);
     self.photoImageView = [[UIImageView alloc] initWithFrame:viewFrame];
-    //self.photoImageView.userInteractionEnabled = YES;
-    
     self.photoScrollView = [[UIScrollView alloc] initWithFrame:viewFrame];
 
     [self.photoScrollView setDelegate:self];
@@ -100,18 +98,12 @@
     
     [self.view addSubview:photoScrollView];
     
-    // setup indicator
-    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, screenSize.height/2, screenSize.width, 45)];
-    [self.indicator setHidesWhenStopped:YES];
-    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [self.navigationController.view addSubview:self.indicator];
     
-    
+    // add TapGestureRecognizer and SwipeGestureRecognizer
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap2)];
     doubleTap.numberOfTapsRequired = 2;
     doubleTap.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer:doubleTap];
-    
     
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextPage:)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
@@ -130,8 +122,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
-    //self.view.backgroundColor = [UIColor whiteColor];
     
     [self.prevButton setEnabled:NO];
     [self.nextButton setEnabled:NO];
@@ -163,8 +153,12 @@
 {
     [super viewWillDisappear:animated];
     
-    if ([self.indicator isAnimating]) {
-        [self.indicator stopAnimating];
+    if (self.indicator != nil) {
+        if ([self.indicator isAnimating]) {
+            [self.indicator stopAnimating];
+        }
+        [self.indicator removeFromSuperview];
+        self.indicator = nil;
     }
 }
 
@@ -393,7 +387,13 @@
 
 - (void)photoDisplay
 {
+    // setup indicator
+    self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height/2, [UIScreen mainScreen].bounds.size.width, 45)];
+    [self.indicator setHidesWhenStopped:YES];
+    [self.indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.navigationController.view addSubview:self.indicator];
     [self.indicator startAnimating];
+    
     self.photoImageView.image = nil;
     [self.actionButton setEnabled:NO];
     // Reset zoomScale.
@@ -469,7 +469,11 @@
             }
             
             // stop indicator
-            [self.indicator stopAnimating];
+            if (self.indicator != nil) {
+                [self.indicator stopAnimating];
+                [self.indicator removeFromSuperview];
+                self.indicator = nil;
+            }
             
             // setup prevButton
             if (self.photoURL.isPrevPage) {

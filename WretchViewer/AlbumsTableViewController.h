@@ -7,6 +7,7 @@
 
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "RAWretchAlbumList.h"
 
 @interface AlbumsTableViewController : UITableViewController

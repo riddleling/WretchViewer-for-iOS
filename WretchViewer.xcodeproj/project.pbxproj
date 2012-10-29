@@ -11,6 +11,7 @@
 		253CC14015FFA6C70036D131 /* AlbumsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */; };
 		253FFA8B15FA687A00BB28EF /* RAWretchAlbumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */; };
 		257ECCEF160F3D4F00F6E712 /* ShowPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 257ECCEE160F3D4F00F6E712 /* ShowPhotoViewController.m */; };
+		25C67743163D9EB200CD5A9A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C67742163D9EB200CD5A9A /* QuartzCore.framework */; };
 		25E3D18715F3DE2B0078E5FD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18615F3DE2B0078E5FD /* UIKit.framework */; };
 		25E3D18915F3DE2B0078E5FD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18815F3DE2B0078E5FD /* Foundation.framework */; };
 		25E3D18B15F3DE2B0078E5FD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E3D18A15F3DE2B0078E5FD /* CoreGraphics.framework */; };
@@ -41,6 +42,7 @@
 		253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAWretchAlbumList.m; sourceTree = "<group>"; };
 		257ECCED160F3D4F00F6E712 /* ShowPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowPhotoViewController.h; sourceTree = "<group>"; };
 		257ECCEE160F3D4F00F6E712 /* ShowPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowPhotoViewController.m; sourceTree = "<group>"; };
+		25C67742163D9EB200CD5A9A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		25E3D18215F3DE2B0078E5FD /* WretchViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WretchViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25E3D18615F3DE2B0078E5FD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		25E3D18815F3DE2B0078E5FD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -74,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25C67743163D9EB200CD5A9A /* QuartzCore.framework in Frameworks */,
 				25F85A06162307FE003B28E9 /* MessageUI.framework in Frameworks */,
 				25E3D18715F3DE2B0078E5FD /* UIKit.framework in Frameworks */,
 				25E3D18915F3DE2B0078E5FD /* Foundation.framework in Frameworks */,
@@ -87,6 +90,7 @@
 		25E3D17715F3DE2A0078E5FD = {
 			isa = PBXGroup;
 			children = (
+				25C67742163D9EB200CD5A9A /* QuartzCore.framework */,
 				25F85A05162307FE003B28E9 /* MessageUI.framework */,
 				25E3D18C15F3DE2B0078E5FD /* WretchViewer */,
 				25E3D18515F3DE2B0078E5FD /* Frameworks */,
