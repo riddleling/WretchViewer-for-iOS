@@ -4,7 +4,7 @@
 
 ![image](http://farm8.staticflickr.com/7134/8157042355_5986d26b29_b.jpg)
 
-[Demo 影片](http://youtu.be/2tcqPb-mk1k)
+[Demo 影片](http://youtu.be/7EQtYnAZ9yU)
 
 
 ## 系統需求
