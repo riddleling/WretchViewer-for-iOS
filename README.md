@@ -12,6 +12,11 @@
 iOS 5.0+
 
 
+## Credits 
+
+背景圖檔來源：http://subtlepatterns.com/
+
+
 ## License
 
 本專案程式碼採用 MIT License 釋出。
