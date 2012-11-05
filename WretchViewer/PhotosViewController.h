@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "RAWretchAlbum.h"
 #import "ShowPhotoViewController.h"
+#import "PhotosLayoutView.h"
 
 @interface PhotosViewController : UIViewController <ShowPhotoViewControllerDelegate>
 {
@@ -21,8 +22,8 @@
 @property (strong, nonatomic) UIBarButtonItem *prevButton;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
 @property (strong, nonatomic) NSMutableArray *images;
-@property (strong, nonatomic) NSMutableArray *transitionImages;
 @property (strong, nonatomic) UIView *transitionView;
+@property (strong, nonatomic) PhotosLayoutView *photosView;
 
 - (id)initWithAlbum:(RAWretchAlbum *)aAlbum;
 

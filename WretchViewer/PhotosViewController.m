@@ -29,8 +29,8 @@
 @synthesize nextButton;
 @synthesize indicator;
 @synthesize images;
-@synthesize transitionImages;
 @synthesize transitionView;
+@synthesize photosView;
 
 
 - (id)initWithAlbum:(RAWretchAlbum *)aAlbum
@@ -40,7 +40,7 @@
     {
         self.album = aAlbum;
         self.images = [[NSMutableArray alloc] init];
-        self.transitionImages = [[NSMutableArray alloc] init];
+        thumbnailRect = CGRectZero;
         [album addObserver:self forKeyPath:@"currentPageNumber" options:NSKeyValueObservingOptionNew context:NULL];
     }
     return self;
@@ -82,7 +82,6 @@
 
     self.navigationItem.rightBarButtonItems = tbitems;
     
-    
     // setup title
     self.title = self.album.name;
     
@@ -96,78 +95,16 @@
     [self.prevButton setEnabled:NO];
     [self.nextButton setEnabled:NO];
     
-    int i = 1;
-    int x = 0;
-    int y = 0;
     
-    for (int tag=0; tag<=20; tag++) {
-        UIImageView *imageView;
-        UIImageView *transitionImageView;
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 105, 105)];
-            transitionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 105, 105)];
-        }
-        else {
-            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
-            transitionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
-        }
-        
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        // setup transitionImageView
-        transitionImageView.contentMode = UIViewContentModeScaleAspectFit;
-        transitionImageView.autoresizesSubviews = YES;
-        transitionImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |UIViewAutoresizingFlexibleTopMargin;
-        
-        // add imageView to images array
-        [images addObject:imageView];
-        [transitionImages addObject:transitionImageView];
-        
-        int offsetX, offsetY;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            offsetX = 50;
-            offsetY = 60;
-        }
-        else {
-            offsetX = 3;
-            offsetY = 10;
-        }
-        
-        CGSize imageViewSize = imageView.frame.size;
-        UIControl *mask = [[UIControl alloc] initWithFrame:CGRectMake(offsetX+x, offsetY+y, imageViewSize.width, imageViewSize.height)];
-        [mask addSubview:imageView];
-        
+    self.photosView = [[PhotosLayoutView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [self.view addSubview:self.photosView];
+    
+    for (int tag=10; tag<30; tag++) {
+        UIControl *mask = (UIControl *)[self.photosView viewWithTag:tag];
         [mask addTarget:self action:@selector(showPhoto:) forControlEvents:UIControlEventTouchUpInside];
-        mask.tag = tag;
-        [self.view addSubview:mask];
-        
-        i++;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            if (i < 5) {
-                x += 192;
-            }
-            if (i == 5) {
-                i = 1;
-                x = 0;
-                y += 172;
-            }
-        }
-        else {
-            if (i < 5) {
-                x += 80;
-            }
-            if (i == 5) {
-                i = 1;
-                x = 0;
-                y += 81;
-            }
-        }
-
     }
     
     [self updateImages];
-    
 }
 
 
@@ -181,8 +118,8 @@
     self.nextButton = nil;
     self.indicator = nil;
     [self.images removeAllObjects];
-    [self.transitionImages removeAllObjects];
     self.transitionView = nil;
+    self.photosView = nil;
 }
 
 
@@ -235,9 +172,7 @@
         self.transitionView.frame = thumbnailRect;
     } completion:^(BOOL finished) {
         [self.transitionView removeFromSuperview];
-        for (UIImageView *imgView in images) {
-            imgView.alpha = 1.0f;
-        }
+        [self.photosView setHidden:NO];
     }];
 }
 
@@ -246,6 +181,12 @@
 
 - (void)updateImages
 {
+    // clean images
+    [self.images removeAllObjects];
+    // 隱藏 photoView
+    self.photosView.alpha = 0.0f;
+    
+    
     // setup indicator
     self.indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2-25, [UIScreen mainScreen].bounds.size.height/2-25, 50, 50)];
     [self.indicator setHidesWhenStopped:YES];
@@ -258,20 +199,11 @@
     [self.indicator startAnimating];
     
     
-    for (int i=0; i<=20; i++) {
-        UIImageView *imageView = [images objectAtIndex:i];
-        [imageView setImage:nil];
-        
-        UIImageView *transitionImageView = [transitionImages objectAtIndex:i];
-        [transitionImageView setImage:nil];
-    }
-    
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         // get photoURLs
         self.currentPhotosList = [album photoURLsOfCurrentPage];
         
         // update images
-        int tag = 0;
         for (RAWretchPhotoURL *photo in self.currentPhotosList) {
             NSURL *url = [NSURL URLWithString:photo.thumbnailURL];
             
@@ -289,17 +221,18 @@
                 UIImage *tmpImage = [self imageWithUIImage:originalImage withBorderWidth:5.0f];
                 UIImage *image = [self imageWithShadow:tmpImage];
                 
-                UIImageView *imageView = [images objectAtIndex:tag];
-                [imageView setImage:image];
-                
-                UIImageView *transitionImageView = [transitionImages objectAtIndex:tag];
-                [transitionImageView setImage:image];
+                [self.images addObject:image];
             });
-            tag++;
         }
         
         // update button and indicator
         dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.photosView setImages:self.images];
+            [UIView animateWithDuration:0.2 animations:^{
+                self.photosView.alpha = 1.0f;
+            }];
+            
             // setup prevButton
             if (self.album.currentPageNumber <= 1) {
                 [self.prevButton setEnabled:NO];
@@ -349,14 +282,27 @@
 
 - (void)showPhoto:(id)sender
 {
-    int tag = [sender tag];
-    
+    int tag = [sender tag] - 10;
+    //NSLog(@"%d", tag);
+
     if (tag < [currentPhotosList count]) {
         RAWretchPhotoURL *photoURL = [currentPhotosList objectAtIndex:tag];
         ShowPhotoViewController *controller = [[ShowPhotoViewController alloc] initWithPhotoURL:photoURL];
         [controller setDelegate:self];
         
-        UIImageView *transitionImageView = [transitionImages objectAtIndex:tag];
+        UIImageView *transitionImageView;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            transitionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 105, 105)];
+        }
+        else {
+            transitionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
+        }
+        
+        [transitionImageView setImage:[self.images objectAtIndex:tag]];
+        transitionImageView.contentMode = UIViewContentModeScaleAspectFit;
+        transitionImageView.autoresizesSubviews = YES;
+        transitionImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        
         CGRect senderRect = [sender frame];
         CGRect rect = [self frameSizeForImage:transitionImageView.image inImageView:transitionImageView];
         thumbnailRect = CGRectMake(senderRect.origin.x + rect.origin.x, senderRect.origin.y + rect.origin.y,rect.size.width , rect.size.height);
@@ -369,9 +315,8 @@
         [self.view addSubview:transitionView];
         
         // hide images
-        for (UIImageView *imgView in images) {
-            imgView.alpha = 0.0f;
-        }
+        [self.photosView setHidden:YES];
+        
 
         [UIView animateWithDuration:0.3 animations:^{
             self.transitionView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64);
