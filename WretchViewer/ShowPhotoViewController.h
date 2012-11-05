@@ -37,6 +37,6 @@
 
 @protocol ShowPhotoViewControllerDelegate <NSObject>
 @optional
-- (void)showPhotoViewDidDisappear;
+- (void)showPhotoViewControllerWillClose;
 
 @end

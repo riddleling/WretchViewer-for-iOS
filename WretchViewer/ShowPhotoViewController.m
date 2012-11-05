@@ -162,14 +162,6 @@
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(showPhotoViewDidDisappear)]) {
-        [self.delegate showPhotoViewDidDisappear];
-    }
-}
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -274,6 +266,9 @@
 
 - (void)closeViewController:(id)sender
 {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(showPhotoViewControllerWillClose)]) {
+        [self.delegate showPhotoViewControllerWillClose];
+    }
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 

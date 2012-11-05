@@ -166,7 +166,7 @@
 
 #pragma mark - ShowPhotoViewControllerDelegate Methods
 
-- (void)showPhotoViewDidDisappear
+- (void)showPhotoViewControllerWillClose
 {
     [UIView animateWithDuration:0.3 animations:^{
         self.transitionView.frame = thumbnailRect;
