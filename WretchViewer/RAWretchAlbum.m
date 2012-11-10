@@ -54,12 +54,14 @@
     }
     
     NSString *htmlText = [self _htmlContent:albumURL];
-    NSMutableArray *photos = [self _photoURLsOfPage:htmlText];    
-    // setup isNextPage
-    [self _searchNextPageFromHtmlText:htmlText];
+    if (htmlText != nil) {
+        NSMutableArray *photos = [self _photoURLsOfPage:htmlText];
+        // setup isNextPage
+        [self _searchNextPageFromHtmlText:htmlText];
     
-    if (photos) {
-        return photos;
+        if (photos) {
+            return photos;
+        }
     }
 
     return nil;

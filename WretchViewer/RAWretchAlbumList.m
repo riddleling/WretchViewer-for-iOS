@@ -48,12 +48,14 @@
     //NSLog(@"%@", albumsURL);
     
     NSString *htmlText = [self _htmlContent:albumsURL];
-    NSArray *albums = [self _albumsOfPage:htmlText];
-    // setup isNextPage
-    [self _searchNextPageFromHtmlText:htmlText];
+    if (htmlText != nil) {
+        NSArray *albums = [self _albumsOfPage:htmlText];
+        // setup isNextPage
+        [self _searchNextPageFromHtmlText:htmlText];
     
-    if (albums) {
-        return albums;
+        if (albums) {
+            return albums;
+        }
     }
     
     return nil;

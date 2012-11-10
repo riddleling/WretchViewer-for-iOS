@@ -47,37 +47,36 @@
 - (NSString *)convertToFileURL
 {
     NSString *htmlText = [self _htmlContent:urlValue];
-    if (htmlText == nil){
-        NSLog(@"html => %@", htmlText);
-    }
-    NSString *outString;
     
-    // setup isPrevPage
-    [self _searchPrevPageFromHtmlText:htmlText];
+    if (htmlText != nil) {
+        NSString *outString;
     
-    // setup isNextPage
-    [self _searchNextPageFromHtmlText:htmlText];
+        // setup isPrevPage
+        [self _searchPrevPageFromHtmlText:htmlText];
     
+        // setup isNextPage
+        [self _searchNextPageFromHtmlText:htmlText];
     
-    // get file URL.
-    NSString *regexpStr = [[NSString alloc] initWithFormat:@"<img id='DisplayImage' src='([^']+)' "];
-    NSTextCheckingResult *urlMatchStr = [self _matchString:htmlText regexpPattern:regexpStr];
+        // get file URL.
+        NSString *regexpStr = [[NSString alloc] initWithFormat:@"<img id='DisplayImage' src='([^']+)' "];
+        NSTextCheckingResult *urlMatchStr = [self _matchString:htmlText regexpPattern:regexpStr];
     
-    if (urlMatchStr) {
-        NSRange range = [urlMatchStr rangeAtIndex:1];
-        outString = [htmlText substringWithRange:range];
-        [self _settingFileNameFromURLString:outString];
-        return outString;
-    }
-    else {
-        NSString *regexpStr2 = [[NSString alloc] initWithFormat:@"<img class='displayimg' src='([^']+)' "];
-        NSTextCheckingResult *urlMatchStr2 = [self _matchString:htmlText regexpPattern:regexpStr2];
-        
-        if (urlMatchStr2) {
-            NSRange range = [urlMatchStr2 rangeAtIndex:1];
+        if (urlMatchStr) {
+            NSRange range = [urlMatchStr rangeAtIndex:1];
             outString = [htmlText substringWithRange:range];
             [self _settingFileNameFromURLString:outString];
             return outString;
+        }
+        else {
+            NSString *regexpStr2 = [[NSString alloc] initWithFormat:@"<img class='displayimg' src='([^']+)' "];
+            NSTextCheckingResult *urlMatchStr2 = [self _matchString:htmlText regexpPattern:regexpStr2];
+        
+            if (urlMatchStr2) {
+                NSRange range = [urlMatchStr2 rangeAtIndex:1];
+                outString = [htmlText substringWithRange:range];
+                [self _settingFileNameFromURLString:outString];
+                return outString;
+            }
         }
     }
     return nil;
