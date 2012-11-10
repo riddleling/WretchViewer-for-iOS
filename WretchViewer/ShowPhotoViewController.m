@@ -266,6 +266,12 @@
 
 - (void)closeViewController:(id)sender
 {
+    if (self.actionSheet) {
+        [self.actionSheet dismissWithClickedButtonIndex:-1 animated:YES];
+        self.actionSheet = nil;
+        return;
+    }
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(showPhotoViewControllerWillClose)]) {
         [self.delegate showPhotoViewControllerWillClose];
     }
