@@ -2,7 +2,7 @@
 //  PhotosLayoutView.h
 //  WretchViewer
 //
-//  Created by Ling Wei-Cheng on 12/10/31.
+//  Created by Wei-Chen Ling on 2012/10/31.
 //
 //
 

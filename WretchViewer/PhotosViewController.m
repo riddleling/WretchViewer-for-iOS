@@ -183,7 +183,7 @@
 {
     // clean images
     [self.images removeAllObjects];
-    // 隱藏 photoView
+    // hide photoView
     self.photosView.alpha = 0.0f;
     
     
@@ -203,7 +203,7 @@
         // get photoURLs
         self.currentPhotosList = [album photoURLsOfCurrentPage];
         
-        // update images
+        // get images
         for (RAWretchPhotoURL *photo in self.currentPhotosList) {
             NSURL *url = [NSURL URLWithString:photo.thumbnailURL];
             
@@ -215,7 +215,7 @@
             NSData *data = [NSURLConnection sendSynchronousRequest:urlRequest
                                          returningResponse:&urlResponse
                                                      error:&error];
-            // update thumbnail image
+            // update images
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIImage *originalImage = [[UIImage alloc] initWithData:data];
                 UIImage *tmpImage = [self imageWithUIImage:originalImage withBorderWidth:5.0f];
@@ -225,9 +225,9 @@
             });
         }
         
-        // update button and indicator
+        // update button and indicator, and photos
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            // update photos
             [self.photosView setImages:self.images];
             [UIView animateWithDuration:0.2 animations:^{
                 self.photosView.alpha = 1.0f;
