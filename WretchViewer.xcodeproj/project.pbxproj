@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		252D0B1E17AFF01800817A3D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 252D0B1D17AFF01800817A3D /* Default-568h@2x.png */; };
 		253BE2511600F91F00F35D67 /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253BE2501600F91F00F35D67 /* PhotosViewController.m */; };
 		253CC14015FFA6C70036D131 /* AlbumsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253CC13F15FFA6C70036D131 /* AlbumsTableViewController.m */; };
 		253FFA8B15FA687A00BB28EF /* RAWretchAlbumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 253FFA8A15FA687A00BB28EF /* RAWretchAlbumList.m */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		252D0B1D17AFF01800817A3D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		253BE24F1600F91F00F35D67 /* PhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosViewController.h; sourceTree = "<group>"; };
 		253BE2501600F91F00F35D67 /* PhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosViewController.m; sourceTree = "<group>"; };
 		253CC13E15FFA6C70036D131 /* AlbumsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumsTableViewController.h; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 		25E3D17715F3DE2A0078E5FD = {
 			isa = PBXGroup;
 			children = (
+				252D0B1D17AFF01800817A3D /* Default-568h@2x.png */,
 				25C67742163D9EB200CD5A9A /* QuartzCore.framework */,
 				25F85A05162307FE003B28E9 /* MessageUI.framework */,
 				25E3D18C15F3DE2B0078E5FD /* WretchViewer */,
@@ -192,7 +195,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = WretchViewer;
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 25E3D17C15F3DE2A0078E5FD /* Build configuration list for PBXProject "WretchViewer" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -226,6 +229,7 @@
 				25F0D8AF1633091900798F9E /* wood_1@2X.png in Resources */,
 				25F0D8B21633092600798F9E /* wood_pattern.png in Resources */,
 				25F0D8B31633092600798F9E /* wood_pattern@2X.png in Resources */,
+				252D0B1E17AFF01800817A3D /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +281,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -302,6 +310,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
